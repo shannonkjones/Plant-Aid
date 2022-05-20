@@ -1,0 +1,13 @@
+<h1>Show Location type</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @location_type.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.location_type_path(@conn, :edit, @location_type) %></span> |
+<span><%= link "Back", to: Routes.location_type_path(@conn, :index) %></span>
