@@ -1,6 +1,7 @@
 defmodule PlantAid.ResearchAdmin.LocationType do
   use Ecto.Schema
   import Ecto.Changeset
+  @timestamps_opts [type: :utc_datetime]
 
   schema "location_types" do
     field :name, :string

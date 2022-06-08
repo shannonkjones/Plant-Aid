@@ -12,15 +12,17 @@
 
 alias PlantAid.ResearchAdmin.LocationType
 
-locations = [
-  %{name: "Commercial field"},
-  %{name: "Home garden"},
-  %{name: "Sentinel plot"},
-  %{name: "Research plot"},
-  %{name: "Greenhouse"},
-  %{name: "Nursery"},
-  %{name: "Forest"},
-  %{name: "Other"},
+timestamp = DateTime.utc_now() |> DateTime.truncate(:second)
+
+location_types = [
+  %{name: "Commercial field", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Home garden", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Sentinel plot", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Research plot", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Greenhouse", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Nursery", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Forest", inserted_at: timestamp, updated_at: timestamp},
+  %{name: "Other", inserted_at: timestamp, updated_at: timestamp}
 ]
-# PlantAid.Repo.insert_all(LocationType, locations)
-for l <- locations, do: PlantAid.ResearchAdmin.create_location_type(l)
+
+PlantAid.Repo.insert_all(LocationType, location_types)

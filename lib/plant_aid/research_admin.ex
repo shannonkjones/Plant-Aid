@@ -8,6 +8,13 @@ defmodule PlantAid.ResearchAdmin do
 
   alias PlantAid.ResearchAdmin.LocationType
 
+  @behaviour Bodyguard.Policy
+
+  def authorize(_action, %{roles: [:superuser]}, _params), do: :ok
+  def authorize(action, _user, _params) when action in [:delete_location_type], do: :error
+  def authorize(_action, %{roles: roles}, _params), do: Enum.member?(roles, :research_admin)
+  def authorize(_action, _user, _params), do: :error
+
   @doc """
   Returns the list of location_types.
 
