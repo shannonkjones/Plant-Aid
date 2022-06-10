@@ -1,3 +1,6 @@
 <h1>Research Administration</h1>
 
-<span><%= link "Location types", to: Routes.location_type_path(@conn, :index) %></span>
+<ul>
+  <li><%= link "Location types", to: Routes.location_type_path(@conn, :index) %></li>
+  <li><%= link "Counties", to: Routes.county_path(@conn, :index) %></li>
+</ul>

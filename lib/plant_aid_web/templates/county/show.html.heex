@@ -1,0 +1,18 @@
+<h1>Show County</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @county.name %>
+  </li>
+
+  <li>
+    <strong>State:</strong>
+    <%= @county.state %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.county_path(@conn, :edit, @county) %></span> |
+<span><%= link "Back", to: Routes.county_path(@conn, :index) %></span>

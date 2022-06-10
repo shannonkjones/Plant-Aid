@@ -137,4 +137,20 @@ defmodule PlantAid.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  def is_superuser?(user) do
+    Enum.member?(user.roles, :superuser)
+  end
+
+  def is_research_admin?(user) do
+    Enum.member?(user.roles, :research_admin)
+  end
+
+  def is_researcher?(user) do
+    Enum.member?(user.roles, :researcher)
+  end
+
+  def is_superuser_or_research_admin?(user) do
+    is_superuser?(user) or is_research_admin?(user)
+  end
 end

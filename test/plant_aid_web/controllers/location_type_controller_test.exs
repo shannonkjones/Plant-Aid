@@ -37,7 +37,7 @@ defmodule PlantAidWeb.LocationTypeControllerTest do
     end
     # setup [:create_location_type]
 
-    test "all requests redirect to /", %{conn: conn, location_type: location_type} do
+    test "all requests return forbidden", %{conn: conn, location_type: location_type} do
       Enum.each(
         [
           get(conn, Routes.location_type_path(conn, :index)),
@@ -50,7 +50,7 @@ defmodule PlantAidWeb.LocationTypeControllerTest do
           delete(conn, Routes.location_type_path(conn, :delete, location_type))
         ],
         fn conn ->
-          assert redirected_to(conn) == Routes.page_path(conn, :index)
+          assert html_response(conn, 403) =~ "Forbidden"
         end
       )
     end

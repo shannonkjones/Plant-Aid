@@ -1,0 +1,30 @@
+<h1>Listing Counties</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>State</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for county <- @counties do %>
+    <tr>
+      <td><%= county.name %></td>
+      <td><%= county.state %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.county_path(@conn, :show, county) %></span>
+        <span><%= link "Edit", to: Routes.county_path(@conn, :edit, county) %></span>
+        <%= if Bodyguard.permit?(PlantAid.ResearchAdmin, :delete_county, @current_user, county) do %>
+          <span><%= link "Delete", to: Routes.county_path(@conn, :delete, county), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New County", to: Routes.county_path(@conn, :new) %></span>

@@ -17,4 +17,19 @@ defmodule PlantAid.ResearchAdminFixtures do
 
     location_type
   end
+
+  @doc """
+  Generate a county.
+  """
+  def county_fixture(attrs \\ %{}) do
+    {:ok, county} =
+      attrs
+      |> Enum.into(%{
+        name: "some name",
+        state: "some state"
+      })
+      |> PlantAid.ResearchAdmin.create_county()
+
+    county
+  end
 end

@@ -53,6 +53,7 @@ defmodule PlantAid.MixProject do
       {:plug_cowboy, "~> 2.5"},
       # Explicit
       {:bodyguard, "~> 2.4"},
+      {:nimble_csv, "~> 1.1"},
     ]
   end
 

@@ -10,19 +10,43 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias PlantAid.ResearchAdmin.LocationType
+alias PlantAid.ResearchAdmin.{
+  LocationType,
+  County
+}
 
 timestamp = DateTime.utc_now() |> DateTime.truncate(:second)
 
-location_types = [
-  %{name: "Commercial field", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Home garden", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Sentinel plot", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Research plot", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Greenhouse", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Nursery", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Forest", inserted_at: timestamp, updated_at: timestamp},
-  %{name: "Other", inserted_at: timestamp, updated_at: timestamp}
-]
+# Location types
+location_types =
+  [
+    "Commercial field",
+    "Home garden",
+    "Sentinel plot",
+    "Research plot",
+    "Greenhouse",
+    "Nursery",
+    "Forest",
+    "Other"
+  ]
+  |> Enum.map(fn name -> %{name: name, inserted_at: timestamp, updated_at: timestamp} end)
 
 PlantAid.Repo.insert_all(LocationType, location_types)
+
+# Counties
+# Run support/counties/counties.sh to generate or update the counties.csv file if necessary
+counties =
+  Path.expand("support/counties/counties.csv")
+  |> File.stream!()
+  |> NimbleCSV.RFC4180.parse_stream()
+  |> Stream.map(fn [county, state] ->
+    %{
+      name: :binary.copy(county),
+      state: :binary.copy(state),
+      inserted_at: timestamp,
+      updated_at: timestamp
+    }
+  end)
+  |> Enum.to_list()
+
+PlantAid.Repo.insert_all(County, counties)
