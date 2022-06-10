@@ -1,14 +1,14 @@
-defmodule PlantAidWeb.ResearchAdminController do
+defmodule PlantAidWeb.AdminController do
   use PlantAidWeb, :controller
 
-  alias PlantAid.ResearchAdmin
+  alias PlantAid.Admin
 
   action_fallback PlantAidWeb.FallbackController
 
   def index(conn, _params) do
     with :ok <-
            Bodyguard.permit(
-             ResearchAdmin,
+             Admin,
              :index,
              conn.assigns.current_user
            ) do

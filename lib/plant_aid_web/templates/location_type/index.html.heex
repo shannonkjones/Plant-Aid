@@ -16,7 +16,7 @@
       <td>
         <span><%= link "Show", to: Routes.location_type_path(@conn, :show, location_type) %></span>
         <span><%= link "Edit", to: Routes.location_type_path(@conn, :edit, location_type) %></span>
-        <%= if Bodyguard.permit?(PlantAid.ResearchAdmin, :delete_location_type, @current_user, location_type) do %>
+        <%= if Bodyguard.permit?(PlantAid.Admin, :delete_location_type, @current_user, location_type) do %>
           <span><%= link "Delete", to: Routes.location_type_path(@conn, :delete, location_type), method: :delete, data: [confirm: "Are you sure?"] %></span>
         <% end %>
       </td>

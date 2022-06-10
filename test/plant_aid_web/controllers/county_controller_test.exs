@@ -2,7 +2,7 @@ defmodule PlantAidWeb.CountyControllerTest do
   use PlantAidWeb.ConnCase
 
   import PlantAid.AccountsFixtures
-  import PlantAid.ResearchAdminFixtures
+  import PlantAid.AdminFixtures
 
   @create_attrs %{name: "some name", state: "some state"}
   @update_attrs %{name: "some updated name", state: "some updated state"}
@@ -30,7 +30,7 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when user is authenticated but not research_admin or superuser" do
+  describe "when user is authenticated but not admin or superuser" do
     setup context do
       user = user_fixture(%{roles: [:researcher]})
       %{conn: log_in_user(context.conn, user), county: county_fixture()}
@@ -56,9 +56,9 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when research_admin index" do
+  describe "when admin index" do
     setup context do
-      user = user_fixture(%{roles: [:research_admin]})
+      user = user_fixture(%{roles: [:admin]})
       %{conn: log_in_user(context.conn, user)}
     end
 
@@ -80,9 +80,9 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when research_admin new county" do
+  describe "when admin new county" do
     setup context do
-      user = user_fixture(%{roles: [:research_admin]})
+      user = user_fixture(%{roles: [:admin]})
       %{conn: log_in_user(context.conn, user)}
     end
 
@@ -104,9 +104,9 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when research_admin create county" do
+  describe "when admin create county" do
     setup context do
-      user = user_fixture(%{roles: [:research_admin]})
+      user = user_fixture(%{roles: [:admin]})
       %{conn: log_in_user(context.conn, user)}
     end
 
@@ -148,9 +148,9 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when research_admin edit county" do
+  describe "when admin edit county" do
     setup context do
-      user = user_fixture(%{roles: [:research_admin]})
+      user = user_fixture(%{roles: [:admin]})
       %{conn: log_in_user(context.conn, user), county: county_fixture()}
     end
 
@@ -178,9 +178,9 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when research_admin update county" do
+  describe "when admin update county" do
     setup context do
-      user = user_fixture(%{roles: [:research_admin]})
+      user = user_fixture(%{roles: [:admin]})
       %{conn: log_in_user(context.conn, user), county: county_fixture()}
     end
 
@@ -234,9 +234,9 @@ defmodule PlantAidWeb.CountyControllerTest do
     end
   end
 
-  describe "when research_admin delete county" do
+  describe "when admin delete county" do
     setup context do
-      user = user_fixture(%{roles: [:research_admin]})
+      user = user_fixture(%{roles: [:admin]})
       %{conn: log_in_user(context.conn, user), county: county_fixture()}
     end
 

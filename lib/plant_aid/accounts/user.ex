@@ -8,7 +8,7 @@ defmodule PlantAid.Accounts.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
-    field :roles, {:array, Ecto.Enum}, values: [:superuser, :research_admin, :researcher]
+    field :roles, {:array, Ecto.Enum}, values: [:superuser, :admin, :researcher]
 
     timestamps()
   end
@@ -142,15 +142,15 @@ defmodule PlantAid.Accounts.User do
     Enum.member?(user.roles, :superuser)
   end
 
-  def is_research_admin?(user) do
-    Enum.member?(user.roles, :research_admin)
+  def is_admin?(user) do
+    Enum.member?(user.roles, :admin)
   end
 
   def is_researcher?(user) do
     Enum.member?(user.roles, :researcher)
   end
 
-  def is_superuser_or_research_admin?(user) do
-    is_superuser?(user) or is_research_admin?(user)
+  def is_superuser_or_admin?(user) do
+    is_superuser?(user) or is_admin?(user)
   end
 end

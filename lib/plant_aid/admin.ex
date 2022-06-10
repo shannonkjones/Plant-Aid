@@ -1,18 +1,18 @@
-defmodule PlantAid.ResearchAdmin do
+defmodule PlantAid.Admin do
   @moduledoc """
-  The ResearchAdmin context.
+  The Admin context.
   """
 
   import Ecto.Query, warn: false
   alias PlantAid.Repo
 
   alias PlantAid.Accounts.User
-  alias PlantAid.ResearchAdmin.LocationType
+  alias PlantAid.Admin.LocationType
 
   @behaviour Bodyguard.Policy
 
   def authorize(action, user, _params) when action in [:delete_location_type, :delete_county], do: User.is_superuser?(user)
-  def authorize(_action, user, _params), do: User.is_superuser_or_research_admin?(user)
+  def authorize(_action, user, _params), do: User.is_superuser_or_admin?(user)
 
   @doc """
   Returns the list of location_types.
@@ -108,7 +108,7 @@ defmodule PlantAid.ResearchAdmin do
     LocationType.changeset(location_type, attrs)
   end
 
-  alias PlantAid.ResearchAdmin.County
+  alias PlantAid.Admin.County
 
   @doc """
   Returns the list of counties.

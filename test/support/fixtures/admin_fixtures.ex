@@ -1,7 +1,7 @@
-defmodule PlantAid.ResearchAdminFixtures do
+defmodule PlantAid.AdminFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `PlantAid.ResearchAdmin` context.
+  entities via the `PlantAid.Admin` context.
   """
 
   @doc """
@@ -13,7 +13,7 @@ defmodule PlantAid.ResearchAdminFixtures do
       |> Enum.into(%{
         name: "some name"
       })
-      |> PlantAid.ResearchAdmin.create_location_type()
+      |> PlantAid.Admin.create_location_type()
 
     location_type
   end
@@ -28,7 +28,7 @@ defmodule PlantAid.ResearchAdminFixtures do
         name: "some name",
         state: "some state"
       })
-      |> PlantAid.ResearchAdmin.create_county()
+      |> PlantAid.Admin.create_county()
 
     county
   end

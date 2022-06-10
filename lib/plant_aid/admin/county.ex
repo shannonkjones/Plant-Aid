@@ -1,4 +1,4 @@
-defmodule PlantAid.ResearchAdmin.County do
+defmodule PlantAid.Admin.County do
   use Ecto.Schema
   import Ecto.Changeset
   @timestamps_opts [type: :utc_datetime]

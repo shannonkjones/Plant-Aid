@@ -83,7 +83,7 @@ defmodule PlantAidWeb.Router do
   scope "/admin", PlantAidWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/", ResearchAdminController, :index
+    get "/", AdminController, :index
     resources "/location_types", LocationTypeController
     resources "/counties", CountyController
   end
