@@ -115,7 +115,7 @@ defmodule PlantAidWeb.CountyController do
     with :ok <-
            Bodyguard.permit(
              Admin,
-             :delete_location_type,
+             :delete_county,
              conn.assigns.current_user,
              id
            ),

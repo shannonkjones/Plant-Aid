@@ -1,5 +1,5 @@
 defmodule PlantAid.AccountsTest do
-  use PlantAid.DataCase
+  use PlantAid.DataCase, async: true
 
   alias PlantAid.Accounts
 

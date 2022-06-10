@@ -1,5 +1,5 @@
 defmodule PlantAid.AdminTest do
-  use PlantAid.DataCase
+  use PlantAid.DataCase, async: true
 
   alias PlantAid.Admin
 
@@ -110,6 +110,62 @@ defmodule PlantAid.AdminTest do
     test "change_county/1 returns a county changeset" do
       county = county_fixture()
       assert %Ecto.Changeset{} = Admin.change_county(county)
+    end
+  end
+
+  describe "pathologies" do
+    alias PlantAid.Admin.Pathology
+
+    import PlantAid.AdminFixtures
+
+    @invalid_attrs %{common_name: nil, scientific_name: nil}
+
+    test "list_pathologies/0 returns all pathologies" do
+      pathology = pathology_fixture()
+      assert Admin.list_pathologies() == [pathology]
+    end
+
+    test "get_pathology!/1 returns the pathology with given id" do
+      pathology = pathology_fixture()
+      assert Admin.get_pathology!(pathology.id) == pathology
+    end
+
+    test "create_pathology/1 with valid data creates a pathology" do
+      valid_attrs = %{common_name: "some common_name", scientific_name: "some scientific_name"}
+
+      assert {:ok, %Pathology{} = pathology} = Admin.create_pathology(valid_attrs)
+      assert pathology.common_name == "some common_name"
+      assert pathology.scientific_name == "some scientific_name"
+    end
+
+    test "create_pathology/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Admin.create_pathology(@invalid_attrs)
+    end
+
+    test "update_pathology/2 with valid data updates the pathology" do
+      pathology = pathology_fixture()
+      update_attrs = %{common_name: "some updated common_name", scientific_name: "some updated scientific_name"}
+
+      assert {:ok, %Pathology{} = pathology} = Admin.update_pathology(pathology, update_attrs)
+      assert pathology.common_name == "some updated common_name"
+      assert pathology.scientific_name == "some updated scientific_name"
+    end
+
+    test "update_pathology/2 with invalid data returns error changeset" do
+      pathology = pathology_fixture()
+      assert {:error, %Ecto.Changeset{}} = Admin.update_pathology(pathology, @invalid_attrs)
+      assert pathology == Admin.get_pathology!(pathology.id)
+    end
+
+    test "delete_pathology/1 deletes the pathology" do
+      pathology = pathology_fixture()
+      assert {:ok, %Pathology{}} = Admin.delete_pathology(pathology)
+      assert_raise Ecto.NoResultsError, fn -> Admin.get_pathology!(pathology.id) end
+    end
+
+    test "change_pathology/1 returns a pathology changeset" do
+      pathology = pathology_fixture()
+      assert %Ecto.Changeset{} = Admin.change_pathology(pathology)
     end
   end
 end

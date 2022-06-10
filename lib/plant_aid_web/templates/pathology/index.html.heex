@@ -1,0 +1,30 @@
+<h1>Listing Pathologies</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Common name</th>
+      <th>Scientific name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for pathology <- @pathologies do %>
+    <tr>
+      <td><%= pathology.common_name %></td>
+      <td><%= pathology.scientific_name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.pathology_path(@conn, :show, pathology) %></span>
+        <span><%= link "Edit", to: Routes.pathology_path(@conn, :edit, pathology) %></span>
+        <%= if Bodyguard.permit?(PlantAid.Admin, :delete_pathology, @current_user, pathology) do %>
+          <span><%= link "Delete", to: Routes.pathology_path(@conn, :delete, pathology), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Pathology", to: Routes.pathology_path(@conn, :new) %></span>

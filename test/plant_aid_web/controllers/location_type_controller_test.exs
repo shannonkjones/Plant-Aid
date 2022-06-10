@@ -1,5 +1,5 @@
 defmodule PlantAidWeb.LocationTypeControllerTest do
-  use PlantAidWeb.ConnCase
+  use PlantAidWeb.ConnCase, async: true
 
   import PlantAid.AccountsFixtures
   import PlantAid.AdminFixtures

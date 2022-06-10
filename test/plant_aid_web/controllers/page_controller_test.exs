@@ -1,5 +1,5 @@
 defmodule PlantAidWeb.PageControllerTest do
-  use PlantAidWeb.ConnCase
+  use PlantAidWeb.ConnCase, async: true
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")

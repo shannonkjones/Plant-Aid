@@ -1,11 +1,11 @@
 #!/bin/sh
 mix phx.gen.auth Accounts User users
 
-mix phx.gen.html ResearchAdmin LocationType location_types name
-mix phx.gen.html ResearchAdmin County counties name state # Is state from a list? If so do we need a state table or some kind of configurable list? Puerto Rico is probably only a matter of time
-mix phx.gen.html ResearchAdmin Host hosts name metadata:map # Threw a metadata map (JSONB) in as a catch all, can be changed/supplemented/removed
-mix phx.gen.html ResearchAdmin HostVariety host_varieties host_id:references:hosts name metadata:map # Does this really have no relationship with host? Seems like it ought to? Same note on metadata
-mix phx.gen.html ResearchAdmin Pathology pathologies name
+mix phx.gen.html Admin LocationType location_types name
+mix phx.gen.html Admin County counties name state
+mix phx.gen.html Admin Pathology pathologies common_name scientific_name
+mix phx.gen.html Admin Host hosts common_name scientific_name
+mix phx.gen.html Admin HostVariety host_varieties host_id:references:hosts name
 
 # Note: arguably we should use phx.gen.json for one or more of the following, or perhaps just phx.gen.schema for some of the "children"
 # Added _id to fields since I think that's a phoenix-ism and by having that it will make automatically populating the models later easier; can be changed if needed

@@ -86,6 +86,7 @@ defmodule PlantAidWeb.Router do
     get "/", AdminController, :index
     resources "/location_types", LocationTypeController
     resources "/counties", CountyController
+    resources "/pathologies", PathologyController
   end
 
   scope "/", PlantAidWeb do

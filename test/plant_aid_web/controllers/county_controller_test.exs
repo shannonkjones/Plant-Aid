@@ -1,5 +1,5 @@
 defmodule PlantAidWeb.CountyControllerTest do
-  use PlantAidWeb.ConnCase
+  use PlantAidWeb.ConnCase, async: true
 
   import PlantAid.AccountsFixtures
   import PlantAid.AdminFixtures
@@ -62,7 +62,7 @@ defmodule PlantAidWeb.CountyControllerTest do
       %{conn: log_in_user(context.conn, user)}
     end
 
-    test "lists all countys", %{conn: conn} do
+    test "lists all counties", %{conn: conn} do
       conn = get(conn, Routes.county_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Counties"
     end
@@ -74,7 +74,7 @@ defmodule PlantAidWeb.CountyControllerTest do
       %{conn: log_in_user(context.conn, user)}
     end
 
-    test "lists all countys", %{conn: conn} do
+    test "lists all counties", %{conn: conn} do
       conn = get(conn, Routes.county_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Counties"
     end

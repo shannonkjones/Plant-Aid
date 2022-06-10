@@ -1,0 +1,18 @@
+<h1>Show Pathology</h1>
+
+<ul>
+
+  <li>
+    <strong>Common name:</strong>
+    <%= @pathology.common_name %>
+  </li>
+
+  <li>
+    <strong>Scientific name:</strong>
+    <%= @pathology.scientific_name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.pathology_path(@conn, :edit, @pathology) %></span> |
+<span><%= link "Back", to: Routes.pathology_path(@conn, :index) %></span>

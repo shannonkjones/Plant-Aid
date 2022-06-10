@@ -32,4 +32,19 @@ defmodule PlantAid.AdminFixtures do
 
     county
   end
+
+  @doc """
+  Generate a pathology.
+  """
+  def pathology_fixture(attrs \\ %{}) do
+    {:ok, pathology} =
+      attrs
+      |> Enum.into(%{
+        common_name: "some common_name",
+        scientific_name: "some scientific_name"
+      })
+      |> PlantAid.Admin.create_pathology()
+
+    pathology
+  end
 end
