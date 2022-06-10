@@ -87,6 +87,7 @@ defmodule PlantAidWeb.Router do
     resources "/location_types", LocationTypeController
     resources "/counties", CountyController
     resources "/pathologies", PathologyController
+    resources "/hosts", HostController
   end
 
   scope "/", PlantAidWeb do

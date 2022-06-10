@@ -47,4 +47,19 @@ defmodule PlantAid.AdminFixtures do
 
     pathology
   end
+
+  @doc """
+  Generate a host.
+  """
+  def host_fixture(attrs \\ %{}) do
+    {:ok, host} =
+      attrs
+      |> Enum.into(%{
+        common_name: "some common_name",
+        scientific_name: "some scientific_name"
+      })
+      |> PlantAid.Admin.create_host()
+
+    host
+  end
 end

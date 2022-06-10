@@ -1,0 +1,18 @@
+<h1>Show Host</h1>
+
+<ul>
+
+  <li>
+    <strong>Common name:</strong>
+    <%= @host.common_name %>
+  </li>
+
+  <li>
+    <strong>Scientific name:</strong>
+    <%= @host.scientific_name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.host_path(@conn, :edit, @host) %></span> |
+<span><%= link "Back", to: Routes.host_path(@conn, :index) %></span>

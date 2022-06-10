@@ -1,0 +1,30 @@
+<h1>Listing Hosts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Common name</th>
+      <th>Scientific name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for host <- @hosts do %>
+    <tr>
+      <td><%= host.common_name %></td>
+      <td><%= host.scientific_name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.host_path(@conn, :show, host) %></span>
+        <span><%= link "Edit", to: Routes.host_path(@conn, :edit, host) %></span>
+        <%= if Bodyguard.permit?(PlantAid.Admin, :delete_host, @current_user, host) do %>
+          <span><%= link "Delete", to: Routes.host_path(@conn, :delete, host), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Host", to: Routes.host_path(@conn, :new) %></span>
