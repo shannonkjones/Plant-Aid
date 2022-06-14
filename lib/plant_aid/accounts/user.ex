@@ -62,7 +62,7 @@ defmodule PlantAid.Accounts.User do
 
     if hash_password? && password && changeset.valid? do
       changeset
-      |> put_change(:hashed_password, Argon2.hash_pwd_salt(password))
+      |> put_change(:hashed_password, hashing_library().hash_pwd_salt(password))
       |> delete_change(:password)
     else
       changeset
@@ -115,16 +115,30 @@ defmodule PlantAid.Accounts.User do
   Verifies the password.
 
   If there is no user or the user doesn't have a password, we call
-  `Argon2.no_user_verify/0` to avoid timing attacks.
+  `hashing_library().no_user_verify/0` to avoid timing attacks.
   """
   def valid_password?(%PlantAid.Accounts.User{hashed_password: hashed_password}, password)
       when is_binary(hashed_password) and byte_size(password) > 0 do
-    Argon2.verify_pass(password, hashed_password)
+        hashing_library().verify_pass(password, hashed_password)
   end
 
   def valid_password?(_, _) do
-    Argon2.no_user_verify()
+    hashing_library().no_user_verify()
     false
+  end
+
+  @doc """
+  Provides a password hashing library based on host operating system.
+
+  Windows does not support Argon2 natively, so use Pbkdf2 for it.
+  """
+  def hashing_library do
+    case :os.type() do
+      {:win32, _} ->
+        Pbkdf2
+      _ ->
+        Argon2
+    end
   end
 
   @doc """

@@ -35,6 +35,7 @@ defmodule PlantAid.MixProject do
     [
       # Default
       {:argon2_elixir, "~> 3.0"},
+      {:pbkdf2_elixir, "~> 2.0"}, # For Windows
       {:phoenix, "~> 1.6.9"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},

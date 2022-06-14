@@ -1,6 +1,6 @@
 alias PlantAid.Accounts.User
 
-password = Argon2.hash_pwd_salt("password")
+password = User.hashing_library().hash_pwd_salt("password")
 timestamp = DateTime.utc_now() |> DateTime.truncate(:second)
 users = [
   %{email: "superuser@example.com", hashed_password: password, roles: [:superuser], inserted_at: timestamp, updated_at: timestamp},
