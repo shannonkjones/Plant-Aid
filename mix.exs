@@ -34,8 +34,6 @@ defmodule PlantAid.MixProject do
   defp deps do
     [
       # Default
-      {:argon2_elixir, "~> 3.0"},
-      {:pbkdf2_elixir, "~> 2.0"}, # For Windows
       {:phoenix, "~> 1.6.9"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
@@ -53,6 +51,12 @@ defmodule PlantAid.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       # Explicit
+      case :os.type do
+        {:win32, _} ->
+          {:pbkdf2_elixir, "~> 2.0"}
+        _ ->
+          {:argon2_elixir, "~> 3.0"}
+      end,
       {:bodyguard, "~> 2.4"},
       {:nimble_csv, "~> 1.1"},
     ]
