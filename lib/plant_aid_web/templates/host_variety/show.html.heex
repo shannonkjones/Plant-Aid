@@ -1,0 +1,13 @@
+<h1>Show Host variety</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @host_variety.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.host_variety_path(@conn, :edit, @host_variety.host_id, @host_variety) %></span> |
+<span><%= link "Back", to: Routes.host_variety_path(@conn, :index, @host_variety.host_id) %></span>

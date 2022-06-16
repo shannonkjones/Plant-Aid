@@ -224,4 +224,58 @@ defmodule PlantAid.AdminTest do
       assert %Ecto.Changeset{} = Admin.change_host(host)
     end
   end
+
+  # describe "host_varieties" do
+  #   alias PlantAid.Admin.HostVariety
+
+  #   import PlantAid.AdminFixtures
+
+  #   @invalid_attrs %{name: nil}
+
+  #   test "list_host_varieties/0 returns all host_varieties" do
+  #     host_variety = host_variety_fixture()
+  #     assert Admin.list_host_varieties() == [host_variety]
+  #   end
+
+  #   test "get_host_variety!/1 returns the host_variety with given id" do
+  #     host_variety = host_variety_fixture()
+  #     assert Admin.get_host_variety!(host_variety.id) == host_variety
+  #   end
+
+  #   test "create_host_variety/1 with valid data creates a host_variety" do
+  #     valid_attrs = %{name: "some name"}
+
+  #     assert {:ok, %HostVariety{} = host_variety} = Admin.create_host_variety(valid_attrs)
+  #     assert host_variety.name == "some name"
+  #   end
+
+  #   test "create_host_variety/1 with invalid data returns error changeset" do
+  #     assert {:error, %Ecto.Changeset{}} = Admin.create_host_variety(@invalid_attrs)
+  #   end
+
+  #   test "update_host_variety/2 with valid data updates the host_variety" do
+  #     host_variety = host_variety_fixture()
+  #     update_attrs = %{name: "some updated name"}
+
+  #     assert {:ok, %HostVariety{} = host_variety} = Admin.update_host_variety(host_variety, update_attrs)
+  #     assert host_variety.name == "some updated name"
+  #   end
+
+  #   test "update_host_variety/2 with invalid data returns error changeset" do
+  #     host_variety = host_variety_fixture()
+  #     assert {:error, %Ecto.Changeset{}} = Admin.update_host_variety(host_variety, @invalid_attrs)
+  #     assert host_variety == Admin.get_host_variety!(host_variety.id)
+  #   end
+
+  #   test "delete_host_variety/1 deletes the host_variety" do
+  #     host_variety = host_variety_fixture()
+  #     assert {:ok, %HostVariety{}} = Admin.delete_host_variety(host_variety)
+  #     assert_raise Ecto.NoResultsError, fn -> Admin.get_host_variety!(host_variety.id) end
+  #   end
+
+  #   test "change_host_variety/1 returns a host_variety changeset" do
+  #     host_variety = host_variety_fixture()
+  #     assert %Ecto.Changeset{} = Admin.change_host_variety(host_variety)
+  #   end
+  # end
 end

@@ -12,6 +12,19 @@
     <%= @host.scientific_name %>
   </li>
 
+  <li>
+    <strong><%= link "Varieties:", to: Routes.host_variety_path(@conn, :index, @host.id) %></strong>
+    <%= if not Enum.empty?(@host.varieties) do %>
+      <ul>
+        <%= for variety <- @host.varieties do %>
+          <li><%= variety.name %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      None
+    <% end %>
+  </li>
+
 </ul>
 
 <span><%= link "Edit", to: Routes.host_path(@conn, :edit, @host) %></span> |

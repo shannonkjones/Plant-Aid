@@ -8,5 +8,7 @@ defmodule PlantAid.Repo.Migrations.CreatePathologies do
 
       timestamps()
     end
+
+    create unique_index(:pathologies, [:common_name])
   end
 end

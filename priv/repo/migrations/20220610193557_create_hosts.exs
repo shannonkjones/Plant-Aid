@@ -8,5 +8,7 @@ defmodule PlantAid.Repo.Migrations.CreateHosts do
 
       timestamps()
     end
+
+    create unique_index(:hosts, [:common_name])
   end
 end

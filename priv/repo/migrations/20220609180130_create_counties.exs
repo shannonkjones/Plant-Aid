@@ -8,5 +8,7 @@ defmodule PlantAid.Repo.Migrations.CreateCounties do
 
       timestamps()
     end
+
+    create unique_index(:counties, [:name, :state])
   end
 end

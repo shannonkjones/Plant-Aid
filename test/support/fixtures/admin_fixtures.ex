@@ -60,6 +60,20 @@ defmodule PlantAid.AdminFixtures do
       })
       |> PlantAid.Admin.create_host()
 
-    host
+    host |> PlantAid.Repo.preload(:varieties)
+  end
+
+  @doc """
+  Generate a host_variety.
+  """
+  def host_variety_fixture(attrs \\ %{}) do
+    {:ok, host_variety} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> PlantAid.Admin.create_host_variety()
+
+    host_variety
   end
 end

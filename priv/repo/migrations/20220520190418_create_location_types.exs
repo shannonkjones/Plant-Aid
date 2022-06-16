@@ -7,5 +7,7 @@ defmodule PlantAid.Repo.Migrations.CreateLocationTypes do
 
       timestamps()
     end
+
+    create unique_index(:location_types, [:name])
   end
 end

@@ -1,0 +1,5 @@
+<h1>Edit Host variety</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.host_variety_path(@conn, :update, @host_variety.host_id, @host_variety)) %>
+
+<span><%= link "Back", to: Routes.host_variety_path(@conn, :index, @host_variety.host_id) %></span>

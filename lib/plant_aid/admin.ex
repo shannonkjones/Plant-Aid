@@ -7,7 +7,6 @@ defmodule PlantAid.Admin do
   alias PlantAid.Repo
 
   alias PlantAid.Accounts.User
-  alias PlantAid.Admin.LocationType
 
   @behaviour Bodyguard.Policy
 
@@ -16,6 +15,8 @@ defmodule PlantAid.Admin do
       do: User.is_superuser?(user)
 
   def authorize(_action, user, _params), do: User.is_superuser_or_admin?(user)
+
+  alias PlantAid.Admin.LocationType
 
   @doc """
   Returns the list of location_types.
@@ -315,7 +316,7 @@ defmodule PlantAid.Admin do
 
   """
   def list_hosts do
-    Repo.all(Host)
+    Repo.all(Host) |> Repo.preload(:varieties)
   end
 
   @doc """
@@ -332,7 +333,7 @@ defmodule PlantAid.Admin do
       ** (Ecto.NoResultsError)
 
   """
-  def get_host!(id), do: Repo.get!(Host, id)
+  def get_host!(id), do: Repo.get!(Host, id) |> Repo.preload(:varieties)
 
   @doc """
   Creates a host.
@@ -397,5 +398,105 @@ defmodule PlantAid.Admin do
   """
   def change_host(%Host{} = host, attrs \\ %{}) do
     Host.changeset(host, attrs)
+  end
+
+  alias PlantAid.Admin.HostVariety
+
+  @doc """
+  Returns the list of host_varieties.
+
+  ## Examples
+
+      iex> list_host_varieties()
+      [%HostVariety{}, ...]
+
+  """
+  def list_host_varieties(host_id) do
+    host = get_host!(host_id)
+    host.varieties
+  end
+
+  @doc """
+  Gets a single host_variety.
+
+  Raises `Ecto.NoResultsError` if the Host variety does not exist.
+
+  ## Examples
+
+      iex> get_host_variety!(123)
+      %HostVariety{}
+
+      iex> get_host_variety!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_host_variety!(host_id, id) do
+    Repo.get_by!(HostVariety, [host_id: host_id, id: id])
+  end
+
+  @doc """
+  Creates a host_variety.
+
+  ## Examples
+
+      iex> create_host_variety(%{field: value})
+      {:ok, %HostVariety{}}
+
+      iex> create_host_variety(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_host_variety(host_id, attrs \\ %{}) do
+    get_host!(host_id)
+    |> Ecto.build_assoc(:varieties)
+    |> HostVariety.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a host_variety.
+
+  ## Examples
+
+      iex> update_host_variety(host_variety, %{field: new_value})
+      {:ok, %HostVariety{}}
+
+      iex> update_host_variety(host_variety, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_host_variety(%HostVariety{} = host_variety, attrs) do
+    host_variety
+    |> HostVariety.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a host_variety.
+
+  ## Examples
+
+      iex> delete_host_variety(host_variety)
+      {:ok, %HostVariety{}}
+
+      iex> delete_host_variety(host_variety)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_host_variety(%HostVariety{} = host_variety) do
+    Repo.delete(host_variety)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking host_variety changes.
+
+  ## Examples
+
+      iex> change_host_variety(host_variety)
+      %Ecto.Changeset{data: %HostVariety{}}
+
+  """
+  def change_host_variety(%HostVariety{} = host_variety, attrs \\ %{}) do
+    HostVariety.changeset(host_variety, attrs)
   end
 end

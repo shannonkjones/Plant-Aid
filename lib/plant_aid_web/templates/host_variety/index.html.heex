@@ -1,0 +1,27 @@
+<h1>Listing Host varieties</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for host_variety <- @host_varieties do %>
+    <tr>
+      <td><%= host_variety.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.host_variety_path(@conn, :show, @host_id, host_variety) %></span>
+        <span><%= link "Edit", to: Routes.host_variety_path(@conn, :edit, @host_id, host_variety) %></span>
+        <span><%= link "Delete", to: Routes.host_variety_path(@conn, :delete, @host_id, host_variety), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Host variety", to: Routes.host_variety_path(@conn, :new, @host_id) %></span> |
+<span><%= link "Back to Host", to: Routes.host_path(@conn, :show, @host_id) %></span>
