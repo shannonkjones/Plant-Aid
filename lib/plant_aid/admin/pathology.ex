@@ -7,6 +7,8 @@ defmodule PlantAid.Admin.Pathology do
     field :common_name, :string
     field :scientific_name, :string
 
+    has_many :observations, PlantAid.Observations.Observation, foreign_key: :suspected_pathology_id
+
     timestamps()
   end
 

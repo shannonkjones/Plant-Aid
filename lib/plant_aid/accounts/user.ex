@@ -10,6 +10,8 @@ defmodule PlantAid.Accounts.User do
     field :confirmed_at, :utc_datetime
     field :roles, {:array, Ecto.Enum}, values: [:superuser, :admin, :researcher]
 
+    has_many :observations, PlantAid.Observations.Observation
+
     timestamps()
   end
 

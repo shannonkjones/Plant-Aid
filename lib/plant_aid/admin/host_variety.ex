@@ -8,6 +8,8 @@ defmodule PlantAid.Admin.HostVariety do
 
     belongs_to :host, PlantAid.Admin.Host
 
+    has_many :observations, PlantAid.Observations.Observation
+
     timestamps()
   end
 

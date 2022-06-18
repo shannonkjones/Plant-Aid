@@ -40,7 +40,7 @@ PlantAid.Repo.insert_all(LocationType, location_types)
 pathologies = [
   {"Sudden Oak Death", "Phytophthora ramorum"},
   {"Late Blight", "Phytophthora infestans"},
-  {"Tomato spotted wilt virus", nil}
+  {"Tomato Spotted Wilt Virus", nil}
 ]
 |> Enum.map(fn {common_name, scientific_name} -> %{common_name: common_name, scientific_name: scientific_name, inserted_at: timestamp, updated_at: timestamp} end)
 
@@ -61,6 +61,9 @@ PlantAid.Repo.insert_all(Host, hosts)
 # Host varieties
 # TODO: don't love the hard coding of IDs
 host_varieties = [
+  # Temporary
+  {1, "Default"},
+  {2, "Default"},
   # Tomato
   {3, "German Johnson"},
   {3, "Mortgage Lifter"},

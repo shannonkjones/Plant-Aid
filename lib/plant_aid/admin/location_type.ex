@@ -6,6 +6,8 @@ defmodule PlantAid.Admin.LocationType do
   schema "location_types" do
     field :name, :string
 
+    has_many :observations, PlantAid.Observations.Observation
+
     timestamps()
   end
 

@@ -1,0 +1,36 @@
+<h1>Listing Observations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Observation date</th>
+      <th>Coordinates</th>
+      <th>Organic</th>
+      <th>Control method</th>
+      <th>Host other</th>
+      <th>Notes</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for observation <- @observations do %>
+    <tr>
+      <td><%= observation.observation_date %></td>
+      <td><%= Tuple.to_list(observation.coordinates.coordinates) |> Enum.reverse() |> Enum.map(fn c -> Float.round(c, 4) end) |> Enum.join(", ") %></td>
+      <td><%= observation.organic %></td>
+      <td><%= observation.control_method %></td>
+      <td><%= observation.host_other %></td>
+      <td><%= observation.notes %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.observation_path(@conn, :show, observation) %></span>
+        <span><%= link "Edit", to: Routes.observation_path(@conn, :edit, observation) %></span>
+        <span><%= link "Delete", to: Routes.observation_path(@conn, :delete, observation), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Observation", to: Routes.observation_path(@conn, :new) %></span>

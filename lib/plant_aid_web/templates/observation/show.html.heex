@@ -1,0 +1,38 @@
+<h1>Show Observation</h1>
+
+<ul>
+
+  <li>
+    <strong>Observation date:</strong>
+    <%= @observation.observation_date %>
+  </li>
+
+  <li>
+    <strong>Coordinates:</strong>
+    <%= Tuple.to_list(@observation.coordinates.coordinates) |> Enum.reverse() |> Enum.map(fn c -> Float.round(c, 4) end) |> Enum.join(", ") %>
+  </li>
+
+  <li>
+    <strong>Organic:</strong>
+    <%= @observation.organic %>
+  </li>
+
+  <li>
+    <strong>Control method:</strong>
+    <%= @observation.control_method %>
+  </li>
+
+  <li>
+    <strong>Host other:</strong>
+    <%= @observation.host_other %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @observation.notes %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.observation_path(@conn, :edit, @observation) %></span> |
+<span><%= link "Back", to: Routes.observation_path(@conn, :index) %></span>
