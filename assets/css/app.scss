@@ -1,5 +1,6 @@
 /* This file is for your main application CSS */
 @import "../node_modules/bootstrap/scss/bootstrap";
+@import "./custom_styles.scss";
 
 /* Alerts and form errors used by phx.new */
 .alert {
