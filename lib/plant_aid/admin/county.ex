@@ -6,6 +6,7 @@ defmodule PlantAid.Admin.County do
   schema "counties" do
     field :name, :string
     field :state, :string
+    field :geom, Geo.PostGIS.Geometry
 
     timestamps()
   end

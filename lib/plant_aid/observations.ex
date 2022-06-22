@@ -50,11 +50,9 @@ defmodule PlantAid.Observations do
 
   """
   def create_observation(attrs \\ %{}) do
-    cs = %Observation{}
+    %Observation{}
     |> Observation.changeset(attrs)
-    IO.inspect(cs, label: "changeset")
-
-    cs |> Repo.insert()
+    |> Repo.insert()
   end
 
   @doc """

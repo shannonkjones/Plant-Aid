@@ -5,7 +5,7 @@ alias PlantAid.Repo
 
 password = User.hashing_library().hash_pwd_salt("password")
 timestamp = DateTime.utc_now() |> DateTime.truncate(:second)
-num_extra_users = 10
+num_extra_users = 100
 users = [
   %{email: "superuser@example.com", hashed_password: password, roles: [:superuser], inserted_at: timestamp, updated_at: timestamp},
   %{email: "admin@example.com", hashed_password: password, roles: [:admin], inserted_at: timestamp, updated_at: timestamp},
@@ -30,7 +30,7 @@ hosts_to_pathologies = %{
 }
 
 min_observations = 5
-max_observations = 25
+max_observations = 100
 
 observations = for u <- users do
   num_observations = Enum.random(min_observations..max_observations)
@@ -57,7 +57,5 @@ observations = for u <- users do
   end
 end
 |> List.flatten()
-
-IO.inspect(observations, label: "Observations")
 
 Repo.insert_all(Observation, observations)
