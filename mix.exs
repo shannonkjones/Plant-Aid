@@ -51,14 +51,16 @@ defmodule PlantAid.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       # Explicit
-      case :os.type do
+      case :os.type() do
         {:win32, _} ->
           {:pbkdf2_elixir, "~> 2.0"}
+
         _ ->
           {:argon2_elixir, "~> 3.0"}
       end,
       {:bodyguard, "~> 2.4"},
       {:nimble_csv, "~> 1.1"},
+      {:dart_sass, "~> 0.2", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -76,7 +78,11 @@ defmodule PlantAid.MixProject do
       "ecto.test_users": ["run priv/repo/test_users.exs"],
       "ecto.reset_dev": ["ecto.reset", "ecto.test_users"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": [
+        "esbuild default --minify",
+        "sass default --no-source-map --style=compressed",
+        "phx.digest"
+      ]
     ]
   end
 end

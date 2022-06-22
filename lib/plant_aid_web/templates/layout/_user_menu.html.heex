@@ -1,13 +1,12 @@
-<ul>
+
 <%= if @current_user do %>
-  <li><%= @current_user.email %></li>
+  <li class="nav-item"><%= link @current_user.email, to: "#", class: "nav-link disabled" %></li>
   <%= if PlantAid.Accounts.User.is_superuser_or_admin?(@current_user) do %>
-    <li><%= link "Admin", to: Routes.admin_path(@conn, :index) %></li>
+    <li class="nav-item"><%= link "Admin", to: Routes.admin_path(@conn, :index), class: "nav-link" %></li>
   <% end %>
-  <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
-  <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
+  <li class="nav-item"><%= link "Settings", to: Routes.user_settings_path(@conn, :edit), class: "nav-link"  %></li>
+  <li class="nav-item"><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "nav-link"  %></li>
 <% else %>
-  <li><%= link "Register", to: Routes.user_registration_path(@conn, :new) %></li>
-  <li><%= link "Log in", to: Routes.user_session_path(@conn, :new) %></li>
+  <li class="nav-item"><%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "nav-link" %></li>
+  <li class="nav-item"><%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "nav-link" %></li>
 <% end %>
-</ul>
