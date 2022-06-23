@@ -6,8 +6,9 @@ defmodule PlantAid.Admin.County do
   schema "counties" do
     field :name, :string
     field :state, :string
+    field :geom, Geo.PostGIS.Geometry
 
-    timestamps()
+    # timestamps()
   end
 
   @doc false
@@ -15,5 +16,11 @@ defmodule PlantAid.Admin.County do
     county
     |> cast(attrs, [:name, :state])
     |> validate_required([:name, :state])
+  end
+
+  defimpl Phoenix.HTML.Safe, for: PlantAid.Admin.County do
+    def to_iodata(county) do
+      [county.name, ", ", county.state]
+    end
   end
 end

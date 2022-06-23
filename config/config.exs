@@ -10,6 +10,8 @@ import Config
 config :plant_aid,
   ecto_repos: [PlantAid.Repo]
 
+config :plant_aid, PlantAid.Repo, types: PlantAid.PostgresTypes
+
 # Configures the endpoint
 config :plant_aid, PlantAidWeb.Endpoint,
   url: [host: "localhost"],
@@ -54,6 +56,9 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :geo_postgis,
+  json_library: Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

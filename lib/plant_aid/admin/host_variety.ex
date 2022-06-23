@@ -8,6 +8,8 @@ defmodule PlantAid.Admin.HostVariety do
 
     belongs_to :host, PlantAid.Admin.Host
 
+    has_many :observations, PlantAid.Observations.Observation
+
     timestamps()
   end
 
@@ -16,5 +18,11 @@ defmodule PlantAid.Admin.HostVariety do
     host_variety
     |> cast(attrs, [:name])
     |> validate_required([:name])
+  end
+
+  defimpl Phoenix.HTML.Safe, for: PlantAid.Admin.HostVariety do
+    def to_iodata(host_variety) do
+      [host_variety.name]
+    end
   end
 end

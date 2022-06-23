@@ -1,0 +1,107 @@
+defmodule PlantAid.Observations do
+  @moduledoc """
+  The Observations context.
+  """
+
+  import Ecto.Query, warn: false
+  alias PlantAid.Repo
+
+  alias PlantAid.Observations.Observation
+
+  @doc """
+  Returns the list of observations.
+
+  ## Examples
+
+      iex> list_observations()
+      [%Observation{}, ...]
+
+  """
+  def list_observations do
+    Repo.all(Observation) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
+  end
+
+  @doc """
+  Gets a single observation.
+
+  Raises `Ecto.NoResultsError` if the Observation does not exist.
+
+  ## Examples
+
+      iex> get_observation!(123)
+      %Observation{}
+
+      iex> get_observation!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_observation!(id), do: Repo.get!(Observation, id) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
+
+  @doc """
+  Creates a observation.
+
+  ## Examples
+
+      iex> create_observation(%{field: value})
+      {:ok, %Observation{}}
+
+      iex> create_observation(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_observation(user, attrs \\ %{}) do
+    %Observation{}
+    |> Observation.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a observation.
+
+  ## Examples
+
+      iex> update_observation(observation, %{field: new_value})
+      {:ok, %Observation{}}
+
+      iex> update_observation(observation, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_observation(%Observation{} = observation, attrs) do
+    observation
+    |> Observation.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a observation.
+
+  ## Examples
+
+      iex> delete_observation(observation)
+      {:ok, %Observation{}}
+
+      iex> delete_observation(observation)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_observation(%Observation{} = observation) do
+    Repo.delete(observation)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking observation changes.
+
+  ## Examples
+
+      iex> change_observation(observation)
+      %Ecto.Changeset{data: %Observation{}}
+
+  """
+  def change_observation(%Observation{} = observation, attrs \\ %{}) do
+    observation
+    |> Repo.preload([:user, :location_type])
+    |> Observation.changeset(attrs)
+  end
+end

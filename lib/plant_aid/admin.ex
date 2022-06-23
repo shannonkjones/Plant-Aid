@@ -499,4 +499,11 @@ defmodule PlantAid.Admin do
   def change_host_variety(%HostVariety{} = host_variety, attrs \\ %{}) do
     HostVariety.changeset(host_variety, attrs)
   end
+
+  def list_all() do
+    Repo.all(LocationType)
+    Repo.all(Pathology)
+    Repo.all(Host) |> Repo.preload([:host_varieties])
+    Repo.all(County)
+  end
 end

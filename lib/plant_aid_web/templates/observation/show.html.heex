@@ -1,0 +1,58 @@
+<h1>Show Observation</h1>
+
+<ul>
+
+  <li>
+    <strong>Observation date:</strong>
+    <%= @observation.observation_date %>
+  </li>
+
+  <li>
+    <strong>Coordinates:</strong>
+    <%= @observation.coordinates %>
+  </li>
+
+  <li>
+    <strong>Organic:</strong>
+    <%= @observation.organic %>
+  </li>
+
+  <li>
+    <strong>Control method:</strong>
+    <%= @observation.control_method %>
+  </li>
+
+  <li>
+    <strong>Location type:</strong>
+    <%= @observation.location_type %>
+  </li>
+
+  <li>
+    <strong>Host:</strong>
+    <%= @observation.host %>
+  </li>
+
+  <li>
+    <strong>Host variety:</strong>
+    <%= @observation.host_variety %>
+  </li>
+
+  <li>
+    <strong>Host other:</strong>
+    <%= @observation.host_other %>
+  </li>
+
+  <li>
+    <strong>Suspected pathology:</strong>
+    <%= @observation.suspected_pathology %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @observation.notes %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.observation_path(@conn, :edit, @observation) %></span> |
+<span><%= link "Back", to: Routes.observation_path(@conn, :index) %></span>

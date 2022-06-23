@@ -60,7 +60,8 @@ defmodule PlantAid.MixProject do
       end,
       {:bodyguard, "~> 2.4"},
       {:nimble_csv, "~> 1.1"},
-      {:dart_sass, "~> 0.2", runtime: Mix.env() == :dev}
+      {:dart_sass, "~> 0.2", runtime: Mix.env() == :dev},
+      {:geo_postgis, "~> 3.4"},
     ]
   end
 
@@ -74,9 +75,7 @@ defmodule PlantAid.MixProject do
     [
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "ecto.test_users": ["run priv/repo/test_users.exs"],
-      "ecto.reset_dev": ["ecto.reset", "ecto.test_users"],
+      "ecto.reset": ["ecto.drop", "ecto.setup", "run priv/repo/user_seeds.exs", "run priv/repo/observation_seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": [
         "esbuild default --minify",
