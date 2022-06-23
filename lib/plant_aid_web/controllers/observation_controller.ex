@@ -3,15 +3,20 @@ defmodule PlantAidWeb.ObservationController do
 
   alias PlantAid.Observations
   alias PlantAid.Observations.Observation
+  alias PlantAid.Admin
 
   def index(conn, _params) do
     observations = Observations.list_observations()
+    IO.inspect(List.first(observations), label: "observation 1")
     render(conn, "index.html", observations: observations)
   end
 
   def new(conn, _params) do
     changeset = Observations.change_observation(%Observation{})
-    render(conn, "new.html", changeset: changeset)
+    location_types = Admin.list_location_types() |> Enum.map(fn lt -> {lt.name, lt.id} end)
+    pathologies = Admin.list_pathologies() |> Enum.map(fn p -> {p.common_name, p.id} end)
+    hosts = Admin.list_hosts() |> Enum.map(fn h -> {h.common_name, h.id} end)
+    render(conn, "new.html", changeset: changeset, location_types: location_types, pathologies: pathologies, hosts: hosts)
   end
 
   def create(conn, %{"observation" => observation_params}) do
@@ -22,7 +27,7 @@ defmodule PlantAidWeb.ObservationController do
       %Geo.Point{coordinates: {longitude, latitude}, srid: 4326}
     end)
     IO.puts("2")
-    case Observations.create_observation(observation_params) do
+    case Observations.create_observation(conn.assigns.current_user, observation_params) do
       {:ok, observation} ->
         IO.puts("3good")
         conn
@@ -43,7 +48,10 @@ defmodule PlantAidWeb.ObservationController do
   def edit(conn, %{"id" => id}) do
     observation = Observations.get_observation!(id)
     changeset = Observations.change_observation(observation)
-    render(conn, "edit.html", observation: observation, changeset: changeset)
+    location_types = Admin.list_location_types() |> Enum.map(fn lt -> {lt.name, lt.id} end)
+    pathologies = Admin.list_pathologies() |> Enum.map(fn p -> {p.common_name, p.id} end)
+    hosts = Admin.list_hosts() |> Enum.map(fn h -> {h.common_name, h.id} end)
+    render(conn, "edit.html", observation: observation, changeset: changeset, location_types: location_types, pathologies: pathologies, hosts: hosts)
   end
 
   def update(conn, %{"id" => id, "observation" => observation_params}) do

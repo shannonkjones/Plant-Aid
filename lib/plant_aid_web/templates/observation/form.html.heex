@@ -29,6 +29,18 @@
   <%= text_input f, :notes %>
   <%= error_tag f, :notes %>
 
+  <%= label f, :location_type_id %>
+  <%= select f, :location_type_id, @location_types %>
+  <%= error_tag f, :location_type_id %>
+
+  <%= label f, :host_id %>
+  <%= select f, :host_id, @hosts %>
+  <%= error_tag f, :host_id %>
+
+  <%= label f, :suspected_pathology_id %>
+  <%= select f, :suspected_pathology_id, @pathologies %>
+  <%= error_tag f, :suspected_pathology_id %>
+
   <div>
     <%= submit "Save" %>
   </div>

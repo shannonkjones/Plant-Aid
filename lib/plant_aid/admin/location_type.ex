@@ -17,4 +17,10 @@ defmodule PlantAid.Admin.LocationType do
     |> cast(attrs, [:name])
     |> validate_required([:name])
   end
+
+  defimpl Phoenix.HTML.Safe, for: PlantAid.Admin.LocationType do
+    def to_iodata(location_type) do
+      [location_type.name]
+    end
+  end
 end

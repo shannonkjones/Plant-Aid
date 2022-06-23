@@ -73,7 +73,7 @@ defmodule PlantAid.MixProject do
     [
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup", "run priv/repo/dev_seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup", "run priv/repo/user_seeds.exs", "run priv/repo/observation_seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]

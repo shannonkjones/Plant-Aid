@@ -19,4 +19,10 @@ defmodule PlantAid.Admin.HostVariety do
     |> cast(attrs, [:name])
     |> validate_required([:name])
   end
+
+  defimpl Phoenix.HTML.Safe, for: PlantAid.Admin.HostVariety do
+    def to_iodata(host_variety) do
+      [host_variety.name]
+    end
+  end
 end

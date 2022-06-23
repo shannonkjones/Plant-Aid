@@ -30,7 +30,18 @@ defmodule PlantAid.Observations.Observation do
   @doc false
   def changeset(observation, attrs) do
     observation
-    |> cast(attrs, [:observation_date, :coordinates, :organic, :control_method, :host_other, :notes])
-    |> validate_required([:observation_date, :coordinates])
+    |> cast(attrs, [:observation_date, :coordinates, :organic, :control_method, :host_other, :notes, :location_type_id, :suspected_pathology_id, :host_id])
+    # |> cast_assoc(:location_type)
+    |> assoc_constraint(:location_type)
+    |> assoc_constraint(:suspected_pathology)
+    |> assoc_constraint(:host)
+    # |> validate_required([:observation_date, :coordinates, :location_type])
+  end
+
+  defimpl Phoenix.HTML.Safe, for: Geo.Point do
+    def to_iodata(point) do
+      {longitude, latitude} = point.coordinates
+      [Float.to_string(latitude), ", ", Float.to_string(longitude)]
+    end
   end
 end

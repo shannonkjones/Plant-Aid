@@ -9,7 +9,7 @@
 
   <li>
     <strong>Coordinates:</strong>
-    <%= Tuple.to_list(@observation.coordinates.coordinates) |> Enum.reverse() |> Enum.map(fn c -> Float.round(c, 4) end) |> Enum.join(", ") %>
+    <%= @observation.coordinates %>
   </li>
 
   <li>
@@ -23,8 +23,28 @@
   </li>
 
   <li>
+    <strong>Location type:</strong>
+    <%= @observation.location_type %>
+  </li>
+
+  <li>
+    <strong>Host:</strong>
+    <%= @observation.host %>
+  </li>
+
+  <li>
+    <strong>Host variety:</strong>
+    <%= @observation.host_variety %>
+  </li>
+
+  <li>
     <strong>Host other:</strong>
     <%= @observation.host_other %>
+  </li>
+
+  <li>
+    <strong>Suspected pathology:</strong>
+    <%= @observation.suspected_pathology %>
   </li>
 
   <li>

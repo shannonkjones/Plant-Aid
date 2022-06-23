@@ -20,4 +20,10 @@ defmodule PlantAid.Admin.Host do
     |> cast(attrs, [:common_name, :scientific_name])
     |> validate_required([:common_name, :scientific_name])
   end
+
+  defimpl Phoenix.HTML.Safe, for: PlantAid.Admin.Host do
+    def to_iodata(host) do
+      [host.common_name, " (", host.scientific_name, ")"]
+    end
+  end
 end

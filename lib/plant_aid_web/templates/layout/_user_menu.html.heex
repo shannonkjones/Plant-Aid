@@ -4,6 +4,7 @@
   <%= if PlantAid.Accounts.User.is_superuser_or_admin?(@current_user) do %>
     <li><%= link "Admin", to: Routes.admin_path(@conn, :index) %></li>
   <% end %>
+  <li><%= link "Observations", to: Routes.observation_path(@conn, :index) %></li>
   <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
   <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
 <% else %>

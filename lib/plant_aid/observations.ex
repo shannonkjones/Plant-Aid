@@ -18,7 +18,7 @@ defmodule PlantAid.Observations do
 
   """
   def list_observations do
-    Repo.all(Observation)
+    Repo.all(Observation) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule PlantAid.Observations do
       ** (Ecto.NoResultsError)
 
   """
-  def get_observation!(id), do: Repo.get!(Observation, id)
+  def get_observation!(id), do: Repo.get!(Observation, id) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
 
   @doc """
   Creates a observation.
@@ -49,9 +49,10 @@ defmodule PlantAid.Observations do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_observation(attrs \\ %{}) do
+  def create_observation(user, attrs \\ %{}) do
     %Observation{}
     |> Observation.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
@@ -99,6 +100,8 @@ defmodule PlantAid.Observations do
 
   """
   def change_observation(%Observation{} = observation, attrs \\ %{}) do
-    Observation.changeset(observation, attrs)
+    observation
+    |> Repo.preload([:user, :location_type])
+    |> Observation.changeset(attrs)
   end
 end
