@@ -89,7 +89,13 @@ defmodule PlantAidWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
-    resources "/observations", ObservationController
+    # resources "/observations", ObservationController
+    live "/observations", ObservationLive.Index, :index
+    live "/observations/new", ObservationLive.Index, :new
+    live "/observations/:id/edit", ObservationLive.Index, :edit
+
+    live "/observations/:id", ObservationLive.Show, :show
+    live "/observations/:id/show/edit", ObservationLive.Show, :edit
   end
 
   scope "/admin", PlantAidWeb do

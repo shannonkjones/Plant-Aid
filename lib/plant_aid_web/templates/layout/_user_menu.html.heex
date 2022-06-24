@@ -4,7 +4,7 @@
   <%= if PlantAid.Accounts.User.is_superuser_or_admin?(@current_user) do %>
     <li class="nav-item"><%= link "Admin", to: Routes.admin_path(@conn, :index), class: "nav-link" %></li>
   <% end %>
-  <li class="nav-item"><%= link "Observations", to: Routes.observation_path(@conn, :index), class: "nav-link" %></li>
+  <li class="nav-item"><%= link "Observations", to: Routes.observation_index_path(@conn, :index), class: "nav-link" %></li>
   <li class="nav-item"><%= link "Settings", to: Routes.user_settings_path(@conn, :edit), class: "nav-link"  %></li>
   <li class="nav-item"><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "nav-link"  %></li>
 <% else %>

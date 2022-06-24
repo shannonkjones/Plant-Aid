@@ -1,0 +1,70 @@
+<h1>Show Observation</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.observation_show_path(@socket, :show, @observation)}>
+    <.live_component
+      module={PlantAidWeb.ObservationLive.FormComponent}
+      id={@observation.id}
+      title={@page_title}
+      action={@live_action}
+      observation={@observation}
+      return_to={Routes.observation_show_path(@socket, :show, @observation)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+  <li>
+    <strong>Observation date:</strong>
+    <%= @observation.observation_date %>
+  </li>
+
+  <li>
+    <strong>Coordinates:</strong>
+    <%= @observation.coordinates %>
+  </li>
+
+  <li>
+    <strong>Organic:</strong>
+    <%= @observation.organic %>
+  </li>
+
+  <li>
+    <strong>Control method:</strong>
+    <%= @observation.control_method %>
+  </li>
+
+  <li>
+    <strong>Location type:</strong>
+    <%= @observation.location_type %>
+  </li>
+
+  <li>
+    <strong>Host:</strong>
+    <%= @observation.host %>
+  </li>
+
+  <li>
+    <strong>Host variety:</strong>
+    <%= @observation.host_variety %>
+  </li>
+
+  <li>
+    <strong>Host other:</strong>
+    <%= @observation.host_other %>
+  </li>
+
+  <li>
+    <strong>Suspected pathology:</strong>
+    <%= @observation.suspected_pathology %>
+  </li>
+
+  <li>
+    <strong>Notes:</strong>
+    <%= @observation.notes %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.observation_show_path(@socket, :edit, @observation), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.observation_index_path(@socket, :index) %></span>

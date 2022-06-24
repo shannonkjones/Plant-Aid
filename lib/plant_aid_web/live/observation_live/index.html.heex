@@ -1,0 +1,56 @@
+<h1>Listing Observations</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.observation_index_path(@socket, :index)}>
+    <.live_component
+      module={PlantAidWeb.ObservationLive.FormComponent}
+      id={@observation.id || :new}
+      title={@page_title}
+      action={@live_action}
+      observation={@observation}
+      current_user={@current_user}
+      return_to={Routes.observation_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Observation date</th>
+      <th>Coordinates</th>
+      <th>Organic</th>
+      <th>Control method</th>
+      <th>Location Type</th>
+      <th>Host</th>
+      <th>Variety</th>
+      <th>Host other</th>
+      <th>Suspected Pathology</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="observations">
+    <%= for observation <- @observations do %>
+      <tr id={"observation-#{observation.id}"}>
+        <td><%= observation.observation_date %></td>
+        <td><%= observation.coordinates %></td>
+        <td><%= observation.organic %></td>
+        <td><%= observation.control_method %></td>
+        <td><%= observation.location_type%></td>
+        <td><%= observation.host %></td>
+        <td><%= observation.host_variety %></td>
+        <td><%= observation.host_other %></td>
+        <td><%= observation.suspected_pathology %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.observation_show_path(@socket, :show, observation) %></span>
+          <span><%= live_patch "Edit", to: Routes.observation_index_path(@socket, :edit, observation) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: observation.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Observation", to: Routes.observation_index_path(@socket, :new) %></span>

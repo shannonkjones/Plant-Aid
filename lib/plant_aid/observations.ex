@@ -35,7 +35,13 @@ defmodule PlantAid.Observations do
       ** (Ecto.NoResultsError)
 
   """
-  def get_observation!(id), do: Repo.get!(Observation, id) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
+  def get_observation!(id) do
+    observation = Repo.get!(Observation, id) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
+    {longitude, latitude} = observation.coordinates.coordinates
+    observation
+    |> Map.put(:latitude, latitude)
+    |> Map.put(:longitude, longitude)
+  end
 
   @doc """
   Creates a observation.
@@ -101,7 +107,7 @@ defmodule PlantAid.Observations do
   """
   def change_observation(%Observation{} = observation, attrs \\ %{}) do
     observation
-    |> Repo.preload([:user, :location_type])
+    # |> Repo.preload([:user, :location_type])
     |> Observation.changeset(attrs)
   end
 end
