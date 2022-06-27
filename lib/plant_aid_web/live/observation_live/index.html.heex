@@ -14,6 +14,21 @@
   </.modal>
 <% end %>
 
+<%= if @live_action == :filter do %>
+  <.modal return_to={Routes.observation_index_path(@socket, :index)}>
+    <.live_component
+      module={PlantAidWeb.ObservationLive.FilterComponent}
+      id={:filter}
+      title={@page_title}
+      action={@live_action}
+      filter={@filter}
+      return_to={Routes.observation_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<span><%= live_patch "Filter", to: Routes.observation_index_path(@socket, :filter) %></span>
+
 <table>
   <thead>
     <tr>

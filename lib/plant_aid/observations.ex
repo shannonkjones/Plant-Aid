@@ -17,8 +17,12 @@ defmodule PlantAid.Observations do
       [%Observation{}, ...]
 
   """
-  def list_observations do
-    Repo.all(Observation) |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
+  def list_observations(filter) do
+    IO.inspect(filter, label: "filter")
+    base_query()
+    |> build_query(filter.changes)
+    |> Repo.all()
+    |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
   end
 
   @doc """
@@ -109,5 +113,31 @@ defmodule PlantAid.Observations do
     observation
     # |> Repo.preload([:user, :location_type])
     |> Observation.changeset(attrs)
+  end
+
+  defp base_query do
+    from o in Observation
+  end
+
+  defp build_query(query, criteria) do
+    Enum.reduce(criteria, query, &compose_query/2)
+  end
+
+  # defp compose_query({"user_id", user_id}, query) do
+  #   where(query, [o], o.user_id == ^user_id)
+  # end
+
+  # defp compose_query({"tags", tags}, query) do
+  #   query
+  #   |> join(:left, [p], t in assoc(p, :tags))
+  #   |> where([_p, t], t.name in ^tags)
+  # end
+
+  defp compose_query({key, value}, query) when key in [:user_id, :location_type_id, :host_id, :host_variety_id, :suspected_pathology_id] do
+    where(query, [o], ^[{key, value}])
+  end
+
+  defp compose_query(_unsupported_param, query) do
+    query
   end
 end
