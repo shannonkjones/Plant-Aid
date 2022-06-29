@@ -36,7 +36,7 @@ defmodule PlantAidWeb.LiveHelpers do
         phx-key="escape"
       >
         <%= if @return_to do %>
-          <%= live_patch "✖",
+          <%= live_patch "X",
             to: @return_to,
             id: "close",
             class: "phx-modal-close",

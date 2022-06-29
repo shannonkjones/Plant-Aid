@@ -17,8 +17,8 @@ hosts_to_pathologies = %{
     "Rhododendron" => ["Sudden Oak Death"],
 }
 
-min_observations = 5
-max_observations = 100
+min_observations = 2
+max_observations = 10
 
 observations = for u <- users do
   num_observations = Enum.random(min_observations..max_observations)
