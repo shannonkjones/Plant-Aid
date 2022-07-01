@@ -14,6 +14,27 @@
 <% end %>
 
 <ul>
+
+  <li>
+    <strong>Suspected pathology:</strong>
+    <%= @observation.suspected_pathology %>
+  </li>
+
+  <li>
+    <strong>Host:</strong>
+    <%= @observation.host %>
+  </li>
+
+  <li>
+    <strong>Host variety:</strong>
+    <%= @observation.host_variety %>
+  </li>
+
+  <li>
+    <strong>Host other:</strong>
+    <%= @observation.host_other %>
+  </li>
+
   <li>
     <strong>Observation date:</strong>
     <%= @observation.observation_date %>
@@ -39,25 +60,6 @@
     <%= @observation.location_type %>
   </li>
 
-  <li>
-    <strong>Host:</strong>
-    <%= @observation.host %>
-  </li>
-
-  <li>
-    <strong>Host variety:</strong>
-    <%= @observation.host_variety %>
-  </li>
-
-  <li>
-    <strong>Host other:</strong>
-    <%= @observation.host_other %>
-  </li>
-
-  <li>
-    <strong>Suspected pathology:</strong>
-    <%= @observation.suspected_pathology %>
-  </li>
 
   <li>
     <strong>Notes:</strong>
