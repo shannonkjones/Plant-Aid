@@ -8,58 +8,97 @@
     phx-target={@myself}
     phx-submit="filter">
 
-    <%= label f, :user_id %>
-    <%= text_input f, :user_id %>
+<div class="container">
+<div class="row pt-2">
+<div class="col">
+    <%= reset "Reset Filter", class: "btn btn-secondary" %>
+      <%= submit "Apply Filter", phx_disable_with: "Applying...", class: "btn btn-primary" %>
+    </div>
+    </div>
+<div class="row">
+<div class="col-md-6">
+    <%= label f, :user_id, class: "form-label" %>
+    <%= text_input f, :user_id, class: "form-control" %>
     <%= error_tag f, :user_id %>
+</div>
+</div>
+<hr>
 
-    <%= label f, :start_date %>
-    <%= datetime_local_input f, :start_date %>
+<div class="row">
+<div class="col-md-4">
+    <%= label f, :suspected_pathology_ids, class: "form-label" %>
+    <%= multiple_select f, :suspected_pathology_ids, @pathologies, class: "form-control" %>
+    <%= error_tag f, :suspected_pathology_ids %>
+</div>
+<div class="col-md-4">
+    <%= label f, :host_ids, class: "form-label" %>
+    <%= multiple_select f, :host_ids, @hosts, class: "form-control" %>
+    <%= error_tag f, :host_ids %>
+</div>
+<div class="col-md-4">
+    <%= label f, :host_other, class: "form-label" %>
+    <%= text_input f, :host_other, class: "form-control" %>
+    <%= error_tag f, :host_other %>
+</div>
+</div>
+<hr>
+<div class="row">
+<div class="col-md-6">
+    <%= label f, :start_date, class: "form-label" %>
+    <%= datetime_local_input f, :start_date, class: "form-control" %>
     <%= error_tag f, :start_date %>
 
-    <%= label f, :end_date %>
-    <%= datetime_local_input f, :end_date %>
+</div>
+<div class="col-md-6">
+    <%= label f, :end_date, class: "form-label" %>
+    <%= datetime_local_input f, :end_date, class: "form-control" %>
     <%= error_tag f, :end_date %>
-
-    <%= label f, :states %>
-    <%= multiple_select f, :states, @states, phx_change: "state_changed" %>
+</div>
+</div>
+<hr>
+<div class="row">
+<div class="col-md-3">
+    <%= label f, :states, class: "form-label" %>
+    <%= multiple_select f, :states, @states, phx_change: "state_changed", class: "form-control" %>
     <%= error_tag f, :states %>
-
-    <%= label f, :county_ids %>
-    <%= multiple_select f, :county_ids, Enum.map(@county_select_options, &{&1, &1.id}) %>
+</div>
+<div class="col-md-4">
+    <%= label f, :county_ids, class: "form-label" %>
+    <%= multiple_select f, :county_ids, Enum.map(@county_select_options, &{&1, &1.id}), class: "form-control" %>
     <%= error_tag f, :county_ids %>
-
-    <%= label f, :organic %>
-    <%= select f, :organic, ["Either": "", "True": true, "False": false], selected: "" %>
-    <%= error_tag f, :organic %>
-
-    <%= label f, :control_method %>
-    <%= text_input f, :control_method %>
-    <%= error_tag f, :control_method %>
-
-    <%= label f, :location_type_ids %>
-    <%= multiple_select f, :location_type_ids, @location_types %>
+</div>
+<div class="col-md-5">
+    <%= label f, :location_type_ids, class: "form-label" %>
+    <%= multiple_select f, :location_type_ids, @location_types, class: "form-control" %>
     <%= error_tag f, :location_type_ids %>
+</div>
 
-    <%= label f, :host_ids %>
-    <%= multiple_select f, :host_ids, @hosts %>
-    <%= error_tag f, :host_ids %>
+<div class="col-md-4">
+    <%= label f, :organic, class: "form-label" %>
+    <%= select f, :organic, ["Either": "", "True": true, "False": false], selected: "", class: "form-control" %>
+    <%= error_tag f, :organic %>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+    <%= label f, :control_method, class: "form-label" %>
+    <%= text_input f, :control_method, class: "form-control" %>
+    <%= error_tag f, :control_method %>
+</div>
 
-    <%= label f, :host_other %>
-    <%= text_input f, :host_other %>
-    <%= error_tag f, :host_other %>
-
-    <%= label f, :suspected_pathology_ids %>
-    <%= multiple_select f, :suspected_pathology_ids, @pathologies %>
-    <%= error_tag f, :suspected_pathology_ids %>
-
-    <%= label f, :notes %>
-    <%= search_input f, :notes %>
+<div class="col-md-6">
+    <%= label f, :notes, class: "form-label" %>
+    <%= search_input f, :notes, class: "form-control" %>
     <%= error_tag f, :notes %>
-
-    <%= reset "Reset Filter" %>
-
-    <div>
-      <%= submit "Apply Filter", phx_disable_with: "Applying..." %>
+</div>
+</div><!-- row -->
+<div class="row pt-2">
+<div class="col">
+    <%= reset "Reset Filter", class: "btn btn-secondary" %>
+      <%= submit "Apply Filter", phx_disable_with: "Applying...", class: "btn btn-primary" %>
     </div>
+    </div>
+    </div><!-- container -->
+
   </.form>
 </div>
