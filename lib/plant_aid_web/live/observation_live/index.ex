@@ -8,13 +8,14 @@ defmodule PlantAidWeb.ObservationLive.Index do
   @impl true
   def mount(_params, %{"user_token" => user_token}, socket) do
     user = Accounts.get_user_by_session_token(user_token)
-    filter = Filter.changeset(%Filter{}, %{"user_id" => user.id})
+    filter = %Filter{user_id: user.id}
+    observations = list_observations(filter)
 
     {:ok,
      assign(socket,
        current_user: user,
        filter: filter,
-       observations: list_observations(filter)
+       observations: observations
      )}
   end
 
@@ -42,7 +43,7 @@ defmodule PlantAidWeb.ObservationLive.Index do
     |> assign(:observation, nil)
   end
 
-  defp apply_action(socket, :filter, params) do
+  defp apply_action(socket, :filter, _params) do
     socket
     |> assign(:page_title, "Filter Observations")
     |> assign(:observation, nil)
@@ -56,7 +57,13 @@ defmodule PlantAidWeb.ObservationLive.Index do
     {:noreply, assign(socket, :observations, list_observations())}
   end
 
-  defp list_observations(criteria \\ %{}) do
-    Observations.list_observations(criteria)
+  @impl true
+  def handle_info({:updated_filter, filter}, socket) do
+    observations = list_observations(filter)
+    {:noreply, assign(socket, filter: filter, observations: observations)}
+  end
+
+  defp list_observations(filter \\ %{}) do
+    Observations.list_observations(filter)
   end
 end

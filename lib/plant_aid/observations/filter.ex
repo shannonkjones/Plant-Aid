@@ -8,9 +8,9 @@ defmodule PlantAid.Observations.Filter do
     field :host_variety_ids, {:array, :id}
     field :location_type_ids, {:array, :id}
     field :suspected_pathology_ids, {:array, :id}
+    field :county_ids, {:array, :id}
 
-    field :state, :string
-    field :county_id, :id
+    field :states, {:array, :string}
     field :control_method, :string
     field :host_other, :string
     field :notes, :string
@@ -25,6 +25,7 @@ defmodule PlantAid.Observations.Filter do
     |> cast(attrs, [
       :start_date,
       :end_date,
+      :states,
       :organic,
       :control_method,
       :host_other,
@@ -33,7 +34,7 @@ defmodule PlantAid.Observations.Filter do
       :suspected_pathology_ids,
       :host_ids,
       :host_variety_ids,
-      :county_id,
+      :county_ids,
       :user_id
     ])
   end

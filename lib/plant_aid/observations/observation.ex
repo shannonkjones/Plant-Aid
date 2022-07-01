@@ -32,21 +32,12 @@ defmodule PlantAid.Observations.Observation do
   @doc false
   def changeset(observation, attrs) do
     observation
-    |> cast(attrs, [:observation_date, :organic, :control_method, :host_other, :notes, :location_type_id, :suspected_pathology_id, :host_id])
-    # |> cast_assoc(:location_type)
+    |> cast(attrs, [:observation_date, :organic, :control_method, :host_other, :notes, :location_type_id, :suspected_pathology_id, :host_id, :host_variety_id])
     |> assoc_constraint(:location_type)
     |> assoc_constraint(:suspected_pathology)
     |> assoc_constraint(:host)
+    |> assoc_constraint(:host_variety)
     # |> validate_required([:observation_date, :coordinates, :location_type])
-    |> cast(attrs, [:latitude, :longitude])
-    |> validate_number(:latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90)
-    |> validate_number(:longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180)
-    |> maybe_convert_lat_long_to_point()
-  end
-
-  def submission_changeset(observation, attrs) do
-    observation
-    |> changeset(attrs)
     |> cast(attrs, [:latitude, :longitude])
     |> validate_number(:latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90)
     |> validate_number(:longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180)
@@ -58,11 +49,10 @@ defmodule PlantAid.Observations.Observation do
       get_change(changeset, :latitude) || get_change(changeset, :longitude) ->
         latitude = fetch_field!(changeset, :latitude)
         longitude = fetch_field!(changeset, :longitude)
+        coordinates = %Geo.Point{coordinates: {longitude, latitude}, srid: 4326}
 
         changeset
-        |> put_change(:coordinates, %Geo.Point{coordinates: {longitude, latitude}, srid: 4326})
-        |> delete_change(:latitude)
-        |> delete_change(:longitude)
+        |> put_change(:coordinates, coordinates)
       true ->
         changeset
     end
@@ -70,7 +60,6 @@ defmodule PlantAid.Observations.Observation do
 
   defimpl Phoenix.HTML.Safe, for: Geo.Point do
     def to_iodata(point) do
-      # Geo.JSON.encode!(point) |> Jason.encode_to_iodata!()
       {longitude, latitude} = point.coordinates
       [Float.to_string(latitude), ", ", Float.to_string(longitude)]
     end

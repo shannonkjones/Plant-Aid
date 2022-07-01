@@ -29,11 +29,15 @@
 
 <span><%= live_patch "Filter", to: Routes.observation_index_path(@socket, :filter) %></span>
 
+<span>Results: <%= Enum.count(@observations) %></span>
+
 <table>
   <thead>
     <tr>
+      <th>User (temp?)</th>
       <th>Observation date</th>
       <th>Coordinates</th>
+      <th>County</th>
       <th>Organic</th>
       <th>Control method</th>
       <th>Location Type</th>
@@ -48,8 +52,10 @@
   <tbody id="observations">
     <%= for observation <- @observations do %>
       <tr id={"observation-#{observation.id}"}>
+        <td><%= observation.user_id %></td>
         <td><%= observation.observation_date %></td>
         <td><%= observation.coordinates %></td>
+        <td><%= observation.county %></td>
         <td><%= observation.organic %></td>
         <td><%= observation.control_method %></td>
         <td><%= observation.location_type%></td>

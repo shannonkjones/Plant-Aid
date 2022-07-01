@@ -58,10 +58,12 @@ defmodule PlantAid.MixProject do
         _ ->
           {:argon2_elixir, "~> 3.0"}
       end,
+      {:ecto_psql_extras, "~> 0.6"},
       {:bodyguard, "~> 2.4"},
       {:nimble_csv, "~> 1.1"},
       {:dart_sass, "~> 0.2", runtime: Mix.env() == :dev},
       {:geo_postgis, "~> 3.4"},
+      {:filterable, "~> 0.7.4"},
     ]
   end
 

@@ -25,6 +25,11 @@
   </li>
 
   <li>
+    <strong>County:</strong>
+    <%= @observation.county %>
+  </li>
+
+  <li>
     <strong>Organic:</strong>
     <%= @observation.organic %>
   </li>
@@ -49,10 +54,12 @@
     <%= @observation.host_variety %>
   </li>
 
-  <li>
-    <strong>Host other:</strong>
-    <%= @observation.host_other %>
-  </li>
+  <%= if @observation.host_other do %>
+    <li>
+      <strong>Host other:</strong>
+      <%= @observation.host_other %>
+    </li>
+  <% end %>
 
   <li>
     <strong>Suspected pathology:</strong>

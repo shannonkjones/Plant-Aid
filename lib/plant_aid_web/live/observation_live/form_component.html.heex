@@ -1,4 +1,23 @@
 <div>
+  <script type="text/javascript">
+    var options = {
+      enableHighAccuracy: true
+    }
+
+    function success(position) {
+      console.log("position", position);
+      document.getElementById("observation-form_latitude").value = position.coords.latitude;
+      document.getElementById("observation-form_longitude").value = position.coords.longitude;
+    }
+
+    function error(err) {
+      console.log("error", err);
+    }
+
+    function populateLocation() {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }
+  </script>
   <h2><%= @title %></h2>
 
   <.form
@@ -10,9 +29,10 @@
     phx-submit="save">
 
     <%= label f, :observation_date %>
-    <%= datetime_select f, :observation_date %>
+    <%= datetime_local_input f, :observation_date, value: DateTime.utc_now() %>
     <%= error_tag f, :observation_date %>
 
+    <button type="button" onclick="populateLocation()">Autopopulate</button>
     <%= label f, :latitude %>
     <%= text_input f, :latitude %>
     <%= error_tag f, :latitude %>

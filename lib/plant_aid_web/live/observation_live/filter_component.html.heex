@@ -3,7 +3,7 @@
 
   <.form
     let={f}
-    for={@filter}
+    for={@changeset}
     id="observation-form"
     phx-target={@myself}
     phx-submit="filter">
@@ -13,15 +13,23 @@
     <%= error_tag f, :user_id %>
 
     <%= label f, :start_date %>
-    <%= datetime_select f, :start_date %>
+    <%= datetime_local_input f, :start_date %>
     <%= error_tag f, :start_date %>
 
     <%= label f, :end_date %>
-    <%= datetime_select f, :end_date %>
+    <%= datetime_local_input f, :end_date %>
     <%= error_tag f, :end_date %>
 
+    <%= label f, :states %>
+    <%= multiple_select f, :states, @states, phx_change: "state_changed" %>
+    <%= error_tag f, :states %>
+
+    <%= label f, :county_ids %>
+    <%= multiple_select f, :county_ids, Enum.map(@county_select_options, &{&1, &1.id}) %>
+    <%= error_tag f, :county_ids %>
+
     <%= label f, :organic %>
-    <%= checkbox f, :organic %>
+    <%= select f, :organic, ["Either": "", "True": true, "False": false], selected: "" %>
     <%= error_tag f, :organic %>
 
     <%= label f, :control_method %>
@@ -48,8 +56,10 @@
     <%= search_input f, :notes %>
     <%= error_tag f, :notes %>
 
+    <%= reset "Reset Filter" %>
+
     <div>
-      <%= submit "Filter", phx_disable_with: "Applying..." %>
+      <%= submit "Apply Filter", phx_disable_with: "Applying..." %>
     </div>
   </.form>
 </div>

@@ -3,65 +3,60 @@ defmodule PlantAidWeb.ObservationLive.FilterComponent do
 
   alias PlantAid.Admin
   alias PlantAid.Observations
+  alias PlantAid.Observations.Filter
 
   @impl true
   def update(%{filter: filter} = assigns, socket) do
-    IO.inspect(filter, label: "filter")
-    # changeset = Observations.change_observation(observation)
-    # IO.inspect(changeset, label: "changeset")
+    changeset = Observations.change_filter(filter)
     location_types = Admin.list_location_types() |> Enum.map(fn lt -> {lt.name, lt.id} end)
     pathologies = Admin.list_pathologies() |> Enum.map(fn p -> {p.common_name, p.id} end)
     hosts = Admin.list_hosts() |> Enum.map(fn h -> {h.common_name, h.id} end)
+    states = Admin.list_states()
+    counties = Admin.list_counties()
+    county_select_options = if filter.states do
+      Enum.filter(counties, fn c ->
+        c.state in filter.states
+      end)
+    else
+      counties
+    end
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(%{filter: filter, location_types: location_types, pathologies: pathologies, hosts: hosts})}
+     |> assign(%{
+       changeset: changeset,
+       location_types: location_types,
+       pathologies: pathologies,
+       hosts: hosts,
+       states: states,
+       counties: counties,
+       county_select_options: county_select_options
+     })}
   end
 
   @impl true
   def handle_event("filter", %{"filter" => filter_params}, socket) do
-    observations = Observations.list_observations(filter_params)
-    {:noreply, assign(socket, %{observations: observations})}
+    filter = Observations.update_filter(%Filter{}, filter_params)
+
+    send(self(), {:updated_filter, filter})
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "Filter updated")
+     |> push_patch(to: socket.assigns.return_to)}
   end
 
-  # @impl true
-  # def handle_event("validate", %{"observation" => observation_params}, socket) do
-  #   changeset =
-  #     socket.assigns.observation
-  #     |> Observations.change_observation(observation_params)
-  #     |> Map.put(:action, :validate)
+  @impl true
+  def handle_event("state_changed", %{"filter" => %{"states" => states}}, socket) do
+    county_select_options = Enum.filter(socket.assigns.counties, fn c ->
+      c.state in states
+    end)
+    {:noreply, assign(socket, county_select_options: county_select_options)}
+  end
 
-  #   {:noreply, assign(socket, :changeset, changeset)}
-  # end
-
-  # def handle_event("save", %{"observation" => observation_params}, socket) do
-  #   save_observation(socket, socket.assigns.action, observation_params)
-  # end
-
-  # defp save_observation(socket, :edit, observation_params) do
-  #   case Observations.update_observation(socket.assigns.observation, observation_params) do
-  #     {:ok, _observation} ->
-  #       {:noreply,
-  #        socket
-  #        |> put_flash(:info, "Observation updated successfully")
-  #        |> push_redirect(to: socket.assigns.return_to)}
-
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       {:noreply, assign(socket, :changeset, changeset)}
-  #   end
-  # end
-
-  # defp save_observation(socket, :new, observation_params) do
-  #   case Observations.create_observation(socket.assigns.current_user, observation_params) do
-  #     {:ok, _observation} ->
-  #       {:noreply,
-  #        socket
-  #        |> put_flash(:info, "Observation created successfully")
-  #        |> push_redirect(to: socket.assigns.return_to)}
-
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       {:noreply, assign(socket, changeset: changeset)}
-  #   end
-  # end
+  @impl true
+  def handle_event("state_changed", _, socket) do
+    {:noreply, assign(socket, county_select_options: socket.assigns.counties)}
+  end
 end
