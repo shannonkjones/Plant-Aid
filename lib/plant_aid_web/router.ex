@@ -93,6 +93,7 @@ defmodule PlantAidWeb.Router do
     live "/observations", ObservationLive.Index, :index
     live "/observations/new", ObservationLive.Index, :new
     live "/observations/:id/edit", ObservationLive.Index, :edit
+    live "/observations/filter", ObservationLive.Index, :filter
 
     live "/observations/:id", ObservationLive.Show, :show
     live "/observations/:id/show/edit", ObservationLive.Show, :edit

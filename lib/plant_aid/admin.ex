@@ -124,7 +124,13 @@ defmodule PlantAid.Admin do
 
   """
   def list_counties do
-    Repo.all(County)
+    from(c in County, order_by: c.state, order_by: c.name)
+    |> Repo.all()
+  end
+
+  def list_states do
+    from(c in County, distinct: true, select: c.state, order_by: c.state)
+    |> Repo.all()
   end
 
   @doc """

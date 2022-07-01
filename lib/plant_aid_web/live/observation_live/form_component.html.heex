@@ -1,4 +1,23 @@
 <div>
+  <script type="text/javascript">
+    var options = {
+      enableHighAccuracy: true
+    }
+
+    function success(position) {
+      console.log("position", position);
+      document.getElementById("observation-form_latitude").value = position.coords.latitude;
+      document.getElementById("observation-form_longitude").value = position.coords.longitude;
+    }
+
+    function error(err) {
+      console.log("error", err);
+    }
+
+    function populateLocation() {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }
+  </script>
   <h2><%= @title %></h2>
 
   <.form
@@ -82,6 +101,48 @@
       <%= text_input f, :notes, class: "form-control" %>
       <%= error_tag f, :notes %>
     </div>
+
+    <%= label f, :observation_date %>
+    <%= datetime_local_input f, :observation_date, value: DateTime.utc_now() %>
+    <%= error_tag f, :observation_date %>
+
+    <button type="button" onclick="populateLocation()">Autopopulate</button>
+    <%= label f, :latitude %>
+    <%= text_input f, :latitude %>
+    <%= error_tag f, :latitude %>
+
+    <%= label f, :longitude %>
+    <%= text_input f, :longitude %>
+    <%= error_tag f, :longitude %>
+
+    <%= label f, :organic %>
+    <%= checkbox f, :organic %>
+    <%= error_tag f, :organic %>
+
+    <%= label f, :control_method %>
+    <%= text_input f, :control_method %>
+    <%= error_tag f, :control_method %>
+
+    <%= label f, :location_type_id %>
+    <%= select f, :location_type_id, @location_types %>
+    <%= error_tag f, :location_type_id %>
+
+    <%= label f, :host_id %>
+    <%= select f, :host_id, @hosts %>
+    <%= error_tag f, :host_id %>
+
+    <%= label f, :host_other %>
+    <%= text_input f, :host_other %>
+    <%= error_tag f, :host_other %>
+
+    <%= label f, :suspected_pathology_id %>
+    <%= select f, :suspected_pathology_id, @pathologies %>
+    <%= error_tag f, :suspected_pathology_id %>
+
+    <%= label f, :notes %>
+    <%= text_input f, :notes %>
+    <%= error_tag f, :notes %>
+
     <div>
       <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
     </div>

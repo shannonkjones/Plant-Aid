@@ -28,12 +28,13 @@
   <li>
     <strong>Host variety:</strong>
     <%= @observation.host_variety %>
-  </li>
-
-  <li>
-    <strong>Host other:</strong>
-    <%= @observation.host_other %>
-  </li>
+</li>
+  <%= if @observation.host_other do %>
+    <li>
+      <strong>Host other:</strong>
+      <%= @observation.host_other %>
+    </li>
+  <% end %>
 
   <li>
     <strong>Observation date:</strong>
@@ -46,6 +47,16 @@
   </li>
 
   <li>
+    <strong>County:</strong>
+    <%= @observation.county %>
+  </li>
+
+  <li>
+    <strong>Location type:</strong>
+    <%= @observation.location_type %>
+  </li>
+
+  <li>
     <strong>Organic:</strong>
     <%= @observation.organic %>
   </li>
@@ -54,12 +65,6 @@
     <strong>Control method:</strong>
     <%= @observation.control_method %>
   </li>
-
-  <li>
-    <strong>Location type:</strong>
-    <%= @observation.location_type %>
-  </li>
-
 
   <li>
     <strong>Notes:</strong>

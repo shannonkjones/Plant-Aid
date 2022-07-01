@@ -1,0 +1,65 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="observation-form"
+    phx-target={@myself}
+    phx-submit="filter">
+
+    <%= label f, :user_id %>
+    <%= text_input f, :user_id %>
+    <%= error_tag f, :user_id %>
+
+    <%= label f, :start_date %>
+    <%= datetime_local_input f, :start_date %>
+    <%= error_tag f, :start_date %>
+
+    <%= label f, :end_date %>
+    <%= datetime_local_input f, :end_date %>
+    <%= error_tag f, :end_date %>
+
+    <%= label f, :states %>
+    <%= multiple_select f, :states, @states, phx_change: "state_changed" %>
+    <%= error_tag f, :states %>
+
+    <%= label f, :county_ids %>
+    <%= multiple_select f, :county_ids, Enum.map(@county_select_options, &{&1, &1.id}) %>
+    <%= error_tag f, :county_ids %>
+
+    <%= label f, :organic %>
+    <%= select f, :organic, ["Either": "", "True": true, "False": false], selected: "" %>
+    <%= error_tag f, :organic %>
+
+    <%= label f, :control_method %>
+    <%= text_input f, :control_method %>
+    <%= error_tag f, :control_method %>
+
+    <%= label f, :location_type_ids %>
+    <%= multiple_select f, :location_type_ids, @location_types %>
+    <%= error_tag f, :location_type_ids %>
+
+    <%= label f, :host_ids %>
+    <%= multiple_select f, :host_ids, @hosts %>
+    <%= error_tag f, :host_ids %>
+
+    <%= label f, :host_other %>
+    <%= text_input f, :host_other %>
+    <%= error_tag f, :host_other %>
+
+    <%= label f, :suspected_pathology_ids %>
+    <%= multiple_select f, :suspected_pathology_ids, @pathologies %>
+    <%= error_tag f, :suspected_pathology_ids %>
+
+    <%= label f, :notes %>
+    <%= search_input f, :notes %>
+    <%= error_tag f, :notes %>
+
+    <%= reset "Reset Filter" %>
+
+    <div>
+      <%= submit "Apply Filter", phx_disable_with: "Applying..." %>
+    </div>
+  </.form>
+</div>
