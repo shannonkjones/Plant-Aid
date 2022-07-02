@@ -1,11 +1,11 @@
-import Ecto.Query
-import Geo.PostGIS
-
 alias PlantAid.Accounts.User
 alias PlantAid.Admin
-alias PlantAid.Admin.County
 alias PlantAid.Observations.Observation
 alias PlantAid.Repo
+
+config = Config.Reader.read!("priv/repo/seed_config.exs") |> Keyword.get(:plant_aid)
+min_observations_per_user = Keyword.get(config, :min_observations_per_user)
+max_observations_per_user = Keyword.get(config, :max_observations_per_user)
 
 timestamp = DateTime.utc_now() |> DateTime.truncate(:second)
 start_unix_timestamp = DateTime.new!(~D[2015-01-01], ~T[00:00:00]) |> DateTime.to_unix()
@@ -28,11 +28,8 @@ words = [
   "ant", "bat", "cat", "dog", "eagle", "fox", "goat", "horse", "impala", "jaguar", "koala", "lion", "mouse", "narwhal", "octopus", "pig", "quail", "rat", "snake", "tiger", "umbrellabird", "vulture", "walrus", "xerus", "yak", "zebra"
 ]
 
-min_observations = 2
-max_observations = 10
-
 observations = for u <- users do
-  num_observations = Enum.random(min_observations..max_observations)
+  num_observations = Enum.random(min_observations_per_user..max_observations_per_user)
   for _ <- 1..num_observations do
     observation_date = Enum.random(start_unix_timestamp..end_unix_timestamp) |> DateTime.from_unix!() |> DateTime.truncate(:second)
     location_type = Enum.random(location_types)
@@ -65,4 +62,6 @@ observations = for u <- users do
 end
 |> List.flatten()
 
-Repo.insert_all(Observation, observations)
+for observations_chunk <- Enum.chunk_every(observations, 2500) do
+  Repo.insert_all(Observation, observations_chunk)
+end

@@ -14,75 +14,6 @@
   </.modal>
 <% end %>
 
-Icon options:
-<h5>
-<i class="fa-solid fa-circle-exclamation text-danger"></i>
-<i class="fa-solid fa-circle-check text-success"></i>
-<i class="fa-solid fa-circle-minus text-primary"></i>
-<i class="fa-solid fa-circle text-warning"></i>
-<i class="fa-solid fa-circle-half-stroke text-secondary"></i>
-<i class="fa-solid fa-circle-question text-warning"></i>
-<i class="fa-solid fa-spinner text-secondary"></i>
-</h5>
-
-<span><%= live_patch "Filter", to: Routes.observation_index_path(@socket, :filter) %></span>
-
-<span>Results: <%= Enum.count(@observations) %></span>
-
-<%= for observation <- @observations do %>
-<div class="card my-2">
-  <div class="card-body">
-    <div class="container">
-      <div class="row">
-        <div class="col-11">
-        <%= link to: Routes.observation_show_path(@socket, :show, observation), class: "text-dark text-decoration-none" do %>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="card-text">
-                <strong>
-                  <i class="fa-solid fa-circle-exclamation text-danger"></i>
-                  <%= observation.suspected_pathology.common_name %>
-                </strong>
-                <small class="text-muted">(Submitted)</small>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="text-md-end">
-                <em><small><%= observation.observation_date %></small></em>
-              </div>
-            </div>
-            <div class="col-11 ">
-              <small>
-                <div class="card-text"><%= observation.host.common_name %> (subtype) | Wake County (NC)</div>
-                <div class="card-text">PCR, Images</div>
-                <div class="text-muted">Notes: Here are some truncated notes about the submission from the user...</div>
-              </small>
-            </div>
-          </div>
-          <% end %>
-        </div>
-        <div class="col-1 align-middle">
-          <h5 class="text-end align-middle">
-            <!-- Default dropstart button -->
-          <div class="btn-group dropstart">
-            <a type="button" class="text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= live_redirect "Show", to: Routes.observation_show_path(@socket, :show, observation), class: "text-secondary text-decoration-none" %></li>
-              <li><%= live_patch "Edit", to: Routes.observation_index_path(@socket, :edit, observation), class: "text-secondary text-decoration-none" %></li>
-              <li><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: observation.id, data: [confirm: "Are you sure?"], class: "text-secondary text-decoration-none" %></li>
-            </ul>
-          </div>
-          </h5>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<% end %>
-
-
 <%= if @live_action == :filter do %>
   <.modal return_to={Routes.observation_index_path(@socket, :index)}>
     <.live_component
@@ -96,5 +27,73 @@ Icon options:
   </.modal>
 <% end %>
 
+Icon options:
+<h5>
+<i class="fa-solid fa-circle-exclamation text-danger"></i>
+<i class="fa-solid fa-circle-check text-success"></i>
+<i class="fa-solid fa-circle-minus text-primary"></i>
+<i class="fa-solid fa-circle text-warning"></i>
+<i class="fa-solid fa-circle-half-stroke text-secondary"></i>
+<i class="fa-solid fa-circle-question text-warning"></i>
+<i class="fa-solid fa-spinner text-secondary"></i>
+</h5>
 
-<span><%= live_patch "New Observation", to: Routes.observation_index_path(@socket, :new) %></span>
+<div><span><%= live_patch "New Observation", to: Routes.observation_index_path(@socket, :new) %></span></div>
+
+<div>
+  <span><%= live_patch "Filter", to: Routes.observation_index_path(@socket, :filter) %></span>
+  <span>Results: <%= Enum.count(@observations) %></span>
+</div>
+
+<%= for observation <- @observations do %>
+  <div class="card my-2">
+    <div class="card-body">
+      <div class="container">
+        <div class="row">
+          <div class="col-11">
+          <%= link to: Routes.observation_show_path(@socket, :show, observation), class: "text-dark text-decoration-none" do %>
+            <div class="row">
+              <div class="col-md-9">
+                <div class="card-text">
+                  <strong>
+                    <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                    <%= observation.suspected_pathology.common_name %>
+                  </strong>
+                  <small class="text-muted">(Submitted)</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-md-end">
+                  <em><small><%= observation.observation_date %></small></em>
+                </div>
+              </div>
+              <div class="col-11 ">
+                <small>
+                  <div class="card-text"><%= observation.host.common_name %> (subtype) | Wake County (NC)</div>
+                  <div class="card-text">PCR, Images</div>
+                  <div class="text-muted">Notes: Here are some truncated notes about the submission from the user...</div>
+                </small>
+              </div>
+            </div>
+            <% end %>
+          </div>
+          <div class="col-1 align-middle">
+            <h5 class="text-end align-middle">
+              <!-- Default dropstart button -->
+            <div class="btn-group dropstart">
+              <a type="button" class="text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= live_redirect "Show", to: Routes.observation_show_path(@socket, :show, observation), class: "text-secondary text-decoration-none" %></li>
+                <li><%= live_patch "Edit", to: Routes.observation_index_path(@socket, :edit, observation), class: "text-secondary text-decoration-none" %></li>
+                <li><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: observation.id, data: [confirm: "Are you sure?"], class: "text-secondary text-decoration-none" %></li>
+              </ul>
+            </div>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
