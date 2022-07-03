@@ -32,7 +32,7 @@
       <div class="col-md-6">
         <div class="form-group mb-2">
           <%= label f, :suspected_pathology_id, class: "form-label" %>
-          <%= select f, :suspected_pathology_id, @pathologies, class: "form-control" %>
+          <%= select f, :suspected_pathology_id, Enum.map(@pathologies, fn p -> {p.common_name, p.id} end), class: "form-control" %>
           <%= error_tag f, :suspected_pathology_id %>
         </div>
       </div>
@@ -47,17 +47,29 @@
       <div class="col-md-6">
         <div class="form-group mb-2">
           <%= label f, :host_id, class: "form-label" %>
-          <%= select f, :host_id, @hosts, class: "form-control" %>
+          <%= select f, :host_id, Enum.map(@hosts, fn h -> {h.common_name, h.id} end) ++ {"Other", nil}, class: "form-control" %>
           <%= error_tag f, :host_id %>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group mb-2">
-          <%= label f, :host_other, class: "form-label" %>
-          <%= text_input f, :host_other, class: "form-control" %>
-          <%= error_tag f, :host_other %>
-        </div>
-      </div>
+      <%= case @selected_host do %>
+        <% "Other" -> %>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <%= label f, :host_other, class: "form-label" %>
+              <%= text_input f, :host_other, class: "form-control" %>
+              <%= error_tag f, :host_other %>
+            </div>
+          </div>
+        <% %PlantAid.Admin.Host{} -> %>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <%= label f, :host_variety_id, class: "form-label" %>
+              <%= select f, :host_variety_id, Enum.map(@selected_host.varieties, fn v -> {v.name, v.id} end), class: "form-control" %>
+              <%= error_tag f, :host_variety_id %>
+            </div>
+          </div>
+        <% _ -> %>
+      <% end %>
     </div>
     <div class="row">
       <div class="col-md-6">
@@ -74,12 +86,13 @@
           <%= error_tag f, :longitude %>
         </div>
       </div>
+      <button type="button" onclick="populateLocation()" class="btn btn-primary ">Autopopulate Coordinates</button>
     </div>
     <div class="row">
       <div class="col-6">
         <div class="form-group mb-2">
           <%= label f, :location_type_id, class: "form-label" %>
-          <%= select f, :location_type_id, @location_types, class: "form-control" %>
+          <%= select f, :location_type_id, Enum.map(@location_types, fn lt -> {lt.name, lt.id} end), class: "form-control" %>
           <%= error_tag f, :location_type_id %>
         </div>
       </div>
@@ -101,47 +114,6 @@
       <%= text_input f, :notes, class: "form-control" %>
       <%= error_tag f, :notes %>
     </div>
-
-    <%= label f, :observation_date %>
-    <%= datetime_local_input f, :observation_date, value: DateTime.utc_now() %>
-    <%= error_tag f, :observation_date %>
-
-    <button type="button" onclick="populateLocation()">Autopopulate</button>
-    <%= label f, :latitude %>
-    <%= text_input f, :latitude %>
-    <%= error_tag f, :latitude %>
-
-    <%= label f, :longitude %>
-    <%= text_input f, :longitude %>
-    <%= error_tag f, :longitude %>
-
-    <%= label f, :organic %>
-    <%= checkbox f, :organic %>
-    <%= error_tag f, :organic %>
-
-    <%= label f, :control_method %>
-    <%= text_input f, :control_method %>
-    <%= error_tag f, :control_method %>
-
-    <%= label f, :location_type_id %>
-    <%= select f, :location_type_id, @location_types %>
-    <%= error_tag f, :location_type_id %>
-
-    <%= label f, :host_id %>
-    <%= select f, :host_id, @hosts %>
-    <%= error_tag f, :host_id %>
-
-    <%= label f, :host_other %>
-    <%= text_input f, :host_other %>
-    <%= error_tag f, :host_other %>
-
-    <%= label f, :suspected_pathology_id %>
-    <%= select f, :suspected_pathology_id, @pathologies %>
-    <%= error_tag f, :suspected_pathology_id %>
-
-    <%= label f, :notes %>
-    <%= text_input f, :notes %>
-    <%= error_tag f, :notes %>
 
     <div>
       <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>

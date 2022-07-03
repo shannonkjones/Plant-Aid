@@ -7,15 +7,15 @@ defmodule PlantAidWeb.ObservationLive.FormComponent do
   @impl true
   def update(%{observation: observation} = assigns, socket) do
     changeset = Observations.change_observation(observation)
-    IO.inspect(changeset, label: "changeset")
-    location_types = Admin.list_location_types() |> Enum.map(fn lt -> {lt.name, lt.id} end)
-    pathologies = Admin.list_pathologies() |> Enum.map(fn p -> {p.common_name, p.id} end)
-    hosts = Admin.list_hosts() |> Enum.map(fn h -> {h.common_name, h.id} end)
+    location_types = Admin.list_location_types()
+    pathologies = Admin.list_pathologies()
+    hosts = Admin.list_hosts()
+    selected_host = get_selected_host(changeset, hosts)
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(%{changeset: changeset, location_types: location_types, pathologies: pathologies, hosts: hosts})}
+     |> assign(%{changeset: changeset, location_types: location_types, pathologies: pathologies, hosts: hosts, selected_host: selected_host})}
   end
 
   @impl true
@@ -25,7 +25,9 @@ defmodule PlantAidWeb.ObservationLive.FormComponent do
       |> Observations.change_observation(observation_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    selected_host = get_selected_host(changeset, socket.assigns.hosts)
+
+    {:noreply, assign(socket, [changeset: changeset, selected_host: selected_host])}
   end
 
   def handle_event("save", %{"observation" => observation_params}, socket) do
@@ -55,6 +57,12 @@ defmodule PlantAidWeb.ObservationLive.FormComponent do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
+  defp get_selected_host(changeset, hosts) do
+    with host_id <- Ecto.Changeset.get_field(changeset, :host_id) do
+      Enum.find(hosts, fn h -> h.id == host_id end) || List.first(hosts)
     end
   end
 end

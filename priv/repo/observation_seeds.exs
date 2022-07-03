@@ -21,8 +21,8 @@ hosts_to_pathologies = %{
     "Tomato" => ["Late Blight", "Tomato Spotted Wilt Virus"],
     "Potato" => ["Late Blight"],
     "Rhododendron" => ["Sudden Oak Death"],
+    "Other" => ["Sudden Oak Death", "Late Blight", "Tomato Spotted Wilt Virus"],
 }
-
 
 words = [
   "ant", "bat", "cat", "dog", "eagle", "fox", "goat", "horse", "impala", "jaguar", "koala", "lion", "mouse", "narwhal", "octopus", "pig", "quail", "rat", "snake", "tiger", "umbrellabird", "vulture", "walrus", "xerus", "yak", "zebra"
@@ -34,7 +34,6 @@ observations = for u <- users do
     observation_date = Enum.random(start_unix_timestamp..end_unix_timestamp) |> DateTime.from_unix!() |> DateTime.truncate(:second)
     location_type = Enum.random(location_types)
     host = Enum.random(hosts)
-    host_variety = Enum.random(host.varieties)
     control_method = Enum.take_random(words, 3) |> Enum.join(" ")
     notes = Enum.take_random(words, 20) |> Enum.join(" ")
     suspected_pathology_name = Map.get(hosts_to_pathologies, host.common_name) |> Enum.random()
@@ -44,13 +43,12 @@ observations = for u <- users do
     coordinates = %Geo.Point{coordinates: {longitude, latitude}, srid: 4326}
     organic = :rand.uniform() >= 0.5
 
-    %{
+    observation = %{
       observation_date: observation_date,
       coordinates: coordinates,
       organic: organic,
       user_id: u.id,
       host_id: host.id,
-      host_variety_id: host_variety.id,
       location_type_id: location_type.id,
       suspected_pathology_id: suspected_pathology.id,
       control_method: control_method,
@@ -58,6 +56,16 @@ observations = for u <- users do
       inserted_at: timestamp,
       updated_at: timestamp
     }
+
+    if host.common_name == "Other" do
+      Map.put(observation, :host_other, Enum.random(words))
+    else
+      if host.varieties do
+        Map.put(observation, :host_variety_id, Enum.random(host.varieties).id)
+      else
+        observation
+      end
+    end
   end
 end
 |> List.flatten()

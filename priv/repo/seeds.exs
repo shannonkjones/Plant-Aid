@@ -61,7 +61,8 @@ hosts =
     {"Bay Laurel", "Umbellularia californica"},
     {"Tomato", "Solanum lycopersicum"},
     {"Potato", "Solanum tuberosum"},
-    {"Rhododendron", "Ericaceae"}
+    {"Rhododendron", "Ericaceae"},
+    {"Other", nil}
   ]
   |> Enum.map(fn {common_name, scientific_name} ->
     %{

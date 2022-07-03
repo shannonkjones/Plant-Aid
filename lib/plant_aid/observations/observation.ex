@@ -41,7 +41,18 @@ defmodule PlantAid.Observations.Observation do
     |> cast(attrs, [:latitude, :longitude])
     |> validate_number(:latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90)
     |> validate_number(:longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180)
+    |> clear_host_variety_id_or_host_other()
     |> maybe_convert_lat_long_to_point()
+  end
+
+  def clear_host_variety_id_or_host_other(changeset) do
+    if get_field(changeset, :host) && get_field(changeset, :host).common_name == "Other" do
+      changeset
+      |> put_change(:host_variety_id, nil)
+    else
+      changeset
+      |> put_change(:host_other, nil)
+    end
   end
 
   def maybe_convert_lat_long_to_point(changeset) do
