@@ -71,7 +71,44 @@
     <%= @observation.notes %>
   </li>
 
+  <li>
+    <strong>Images:</strong>
+    <div>
+      <%= for url <- @observation.image_urls do %>
+        <img src={url} height="200">
+      <% end %>
+    </div>
+  </li>
+
+  <%= if @observation.lamp_details do %>
+    <li>
+      <strong>LAMP Details:</strong>
+      <ul>
+        <li>
+          <strong>Status:</strong>
+          <%= @observation.lamp_details.status %>
+        </li>
+        <li>
+          <strong>Initial Images:</strong>
+          <div>
+            <%= for url <- @observation.lamp_details.initial_image_urls do %>
+              <img src={url} height="200">
+            <% end %>
+          </div>
+        </li>
+        <li>
+          <strong>Final Images:</strong>
+          <div>
+            <%= for url <- @observation.lamp_details.final_image_urls do %>
+              <img src={url} height="200">
+            <% end %>
+          </div>
+        </li>
+      </ul>
+    </li>
+  <% end %>
+
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.observation_show_path(@socket, :edit, @observation), class: "button" %></span> |
+<span><%= live_redirect "Edit", to: Routes.observation_form_path(@socket, :edit, @observation), class: "button" %></span> |
 <span><%= live_redirect "Back", to: Routes.observation_index_path(@socket, :index) %></span>

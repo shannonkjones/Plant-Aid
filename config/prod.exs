@@ -14,6 +14,12 @@ config :plant_aid, PlantAidWeb.Endpoint, cache_static_manifest: "priv/static/cac
 # Do not print debug messages in production
 config :logger, level: :info
 
+# Object storage
+config :plant_aid, PlantAid.ObjectStorage,
+  domain: "digitaloceanspaces.com",
+  region: "nyc3",
+  bucket: "padb"
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

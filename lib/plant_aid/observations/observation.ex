@@ -9,6 +9,7 @@ defmodule PlantAid.Observations.Observation do
     LocationType,
     Pathology
   }
+  alias PlantAid.Diagnostics.LAMPDetails
 
   schema "observations" do
     field :control_method, :string
@@ -19,6 +20,8 @@ defmodule PlantAid.Observations.Observation do
     field :notes, :string
     field :observation_date, :utc_datetime
     field :organic, :boolean, default: false
+    field :image_urls, {:array, :string}, default: []
+    field :status, Ecto.Enum, values: [:unsubmitted, :submitted], default: :unsubmitted
 
     belongs_to :user, PlantAid.Accounts.User
     belongs_to :host, Host
@@ -26,23 +29,25 @@ defmodule PlantAid.Observations.Observation do
     belongs_to :location_type, LocationType
     belongs_to :suspected_pathology, Pathology
 
+    has_one :lamp_details, LAMPDetails
+
     timestamps()
   end
 
   @doc false
   def changeset(observation, attrs) do
     observation
-    |> cast(attrs, [:observation_date, :organic, :control_method, :host_other, :notes, :location_type_id, :suspected_pathology_id, :host_id, :host_variety_id])
+    |> cast(attrs, [:observation_date, :organic, :control_method, :host_other, :image_urls, :latitude, :longitude, :notes, :location_type_id, :suspected_pathology_id, :host_id, :host_variety_id])
+    |> cast_assoc(:lamp_details)
     |> assoc_constraint(:location_type)
     |> assoc_constraint(:suspected_pathology)
     |> assoc_constraint(:host)
     |> assoc_constraint(:host_variety)
-    # |> validate_required([:observation_date, :coordinates, :location_type])
-    |> cast(attrs, [:latitude, :longitude])
+    # |> validate_required([:latitude, :longitude, :observation_date])
     |> validate_number(:latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90)
     |> validate_number(:longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180)
+    |> maybe_put_coordinates()
     |> clear_host_variety_id_or_host_other()
-    |> maybe_convert_lat_long_to_point()
   end
 
   def clear_host_variety_id_or_host_other(changeset) do
@@ -55,17 +60,15 @@ defmodule PlantAid.Observations.Observation do
     end
   end
 
-  def maybe_convert_lat_long_to_point(changeset) do
-    cond do
-      get_change(changeset, :latitude) || get_change(changeset, :longitude) ->
-        latitude = fetch_field!(changeset, :latitude)
-        longitude = fetch_field!(changeset, :longitude)
-        coordinates = %Geo.Point{coordinates: {longitude, latitude}, srid: 4326}
+  def maybe_put_coordinates(changeset) do
+    latitude = get_field(changeset, :latitude)
+    longitude = get_field(changeset, :longitude)
 
-        changeset
-        |> put_change(:coordinates, coordinates)
-      true ->
-        changeset
+    if latitude && longitude do
+      changeset
+      |> put_change(:coordinates, %Geo.Point{coordinates: {longitude, latitude}, srid: 4326})
+    else
+      changeset
     end
   end
 

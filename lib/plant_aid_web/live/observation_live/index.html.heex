@@ -38,7 +38,7 @@ Icon options:
 <i class="fa-solid fa-spinner text-secondary"></i>
 </h5>
 
-<div><span><%= live_patch "New Observation", to: Routes.observation_index_path(@socket, :new) %></span></div>
+<div><span><%= live_redirect "New Observation", to: Routes.observation_form_path(@socket, :new) %></span></div>
 
 <div>
   <span><%= live_patch "Filter", to: Routes.observation_index_path(@socket, :filter) %></span>
@@ -69,7 +69,7 @@ Icon options:
               </div>
               <div class="col-11 ">
                 <small>
-                  <div class="card-text"><%= observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %> | Wake County (NC)</div>
+                  <div class="card-text"><%= observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %><%= if observation.county, do: "| #{observation.county.name} County (NC)" %></div>
                   <div class="card-text">PCR, Images</div>
                   <div class="text-muted">Notes: Here are some truncated notes about the submission from the user...</div>
                 </small>
@@ -86,7 +86,7 @@ Icon options:
               </a>
               <ul class="dropdown-menu">
                 <li><%= live_redirect "Show", to: Routes.observation_show_path(@socket, :show, observation), class: "text-secondary text-decoration-none" %></li>
-                <li><%= live_patch "Edit", to: Routes.observation_index_path(@socket, :edit, observation), class: "text-secondary text-decoration-none" %></li>
+                <li><%= live_patch "Edit", to: Routes.observation_form_path(@socket, :edit, observation), class: "text-secondary text-decoration-none" %></li>
                 <li><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: observation.id, data: [confirm: "Are you sure?"], class: "text-secondary text-decoration-none" %></li>
               </ul>
             </div>

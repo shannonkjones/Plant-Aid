@@ -44,6 +44,7 @@ observations = for u <- users do
     organic = :rand.uniform() >= 0.5
 
     observation = %{
+      status: :unsubmitted,
       observation_date: observation_date,
       coordinates: coordinates,
       organic: organic,

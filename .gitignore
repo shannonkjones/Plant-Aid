@@ -35,3 +35,5 @@ plant_aid-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignore local .env file
+.env

@@ -1,4 +1,4 @@
-<div>
+<%# <div>
   <script type="text/javascript">
     var options = {
       enableHighAccuracy: true
@@ -28,6 +28,7 @@
     phx-change="validate"
     phx-submit="save">
 
+    <h4>Observation</h4>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group mb-2">
@@ -37,9 +38,11 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="form-group mb-2">
+        <div class="form-group mb-2" x-data="{date: new Date().toLocaleString()}">
         <%= label f, :observation_date, class: "form-label" %>
-        <%= datetime_local_input f, :observation_date, class: "form-control" %>
+        <%= datetime_local_input f, :observation_date, class: "form-control", x_model: "date" %>
+        <%= error_tag f, :observation_date %>
+        <div x-text="date"></div>
         </div>
       </div>
     </div>
@@ -47,7 +50,7 @@
       <div class="col-md-6">
         <div class="form-group mb-2">
           <%= label f, :host_id, class: "form-label" %>
-          <%= select f, :host_id, Enum.map(@hosts, fn h -> {h.common_name, h.id} end) ++ {"Other", nil}, class: "form-control" %>
+          <%= select f, :host_id, Enum.map(@hosts, fn h -> {h.common_name, h.id} end), class: "form-control" %>
           <%= error_tag f, :host_id %>
         </div>
       </div>
@@ -71,6 +74,7 @@
         <% _ -> %>
       <% end %>
     </div>
+    <h4>Location</h4>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group mb-2">
@@ -114,9 +118,176 @@
       <%= text_input f, :notes, class: "form-control" %>
       <%= error_tag f, :notes %>
     </div>
+  <h4>Supporting Data</h4>
+  <%= inputs_for f, :lamp_details, fn ldf -> %>
+    <h5>LAMP</h5>
+    <div class="row">
+      <div class="form-group mb-2">
+        <%= label ldf, :status, class: "form-label" %>
+        <%= text_input ldf, :status, class: "form-control" %>
+        <%= error_tag ldf, :status %>
+      </div>
+      <div class="form-group mb-2">
+        <label class="form-label">Initial LAMP Images</label>
+        <%= live_file_input @uploads.lamp_initial %>
+        <section phx-drop-target={@uploads.lamp_initial.ref}>
+
+        <%# render each image entry %>
+        <%= for entry <- @uploads.lamp_initial.entries do %>
+          <article class="upload-entry">
+
+            <figure>
+              <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
+              <%= live_img_preview entry, width: 200 %>
+              <figcaption><%= entry.client_name %></figcaption>
+            </figure>
+
+            <%# entry.progress will update automatically for in-flight entries %>
+            <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
+
+            <%# a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 %>
+            <button phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="btn btn-secondary">&times;</button>
+
+            <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
+            <%= for err <- upload_errors(@uploads.lamp_initial, entry) do %>
+              <p class="alert alert-danger"><%= error_to_string(err) %></p>
+            <% end %>
+
+          </article>
+        <% end %>
+
+        <%# Phoenix.LiveView.Helpers.upload_errors/1 returns a list of error atoms %>
+        <%= for err <- upload_errors(@uploads.lamp_initial) do %>
+          <p class="alert alert-danger"><%= error_to_string(err) %></p>
+        <% end %>
+
+        </section>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group mb-2">
+        <label class="form-label">Final LAMP Images</label>
+        <%= live_file_input @uploads.lamp_final %>
+        <section phx-drop-target={@uploads.lamp_final.ref}>
+
+        <%# render each image entry %>
+        <%= for entry <- @uploads.lamp_final.entries do %>
+          <article class="upload-entry">
+
+            <figure>
+              <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
+              <%= live_img_preview entry, width: 200 %>
+              <figcaption><%= entry.client_name %></figcaption>
+            </figure>
+
+            <%# entry.progress will update automatically for in-flight entries %>
+            <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
+
+            <%# a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 %>
+            <button phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="btn btn-secondary">&times;</button>
+
+            <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
+            <%= for err <- upload_errors(@uploads.lamp_final, entry) do %>
+              <p class="alert alert-danger"><%= error_to_string(err) %></p>
+            <% end %>
+
+          </article>
+        <% end %>
+
+        <%# Phoenix.LiveView.Helpers.upload_errors/1 returns a list of error atoms %>
+        <%= for err <- upload_errors(@uploads.lamp_final) do %>
+          <p class="alert alert-danger"><%= error_to_string(err) %></p>
+        <% end %>
+
+        </section>
+      </div>
+    </div>
+  <% end %>
+
+  <%= inputs_for f, :voc_details, fn _vdf -> %>
+    <h5>VOC</h5>
+    <div class="row">
+      <div class="form-group mb-2">
+        <label class="form-label">VOC Result Images</label>
+        <%= live_file_input @uploads.voc_result %>
+        <section phx-drop-target={@uploads.voc_result.ref}>
+
+        <%# render each image entry %>
+        <%= for entry <- @uploads.voc_result.entries do %>
+          <article class="upload-entry">
+
+            <figure>
+              <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
+              <%= live_img_preview entry, width: 200 %>
+              <figcaption><%= entry.client_name %></figcaption>
+            </figure>
+
+            <%# entry.progress will update automatically for in-flight entries %>
+            <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
+
+            <%# a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 %>
+            <button phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="btn btn-secondary">&times;</button>
+
+            <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
+            <%= for err <- upload_errors(@uploads.voc_result, entry) do %>
+              <p class="alert alert-danger"><%= error_to_string(err) %></p>
+            <% end %>
+
+          </article>
+        <% end %>
+
+        <%# Phoenix.LiveView.Helpers.upload_errors/1 returns a list of error atoms %>
+        <%= for err <- upload_errors(@uploads.voc_result) do %>
+          <p class="alert alert-danger"><%= error_to_string(err) %></p>
+        <% end %>
+
+        </section>
+      </div>
+    </div>
+  <% end %>
+
+  <h5>Images</h5>
+  <div class="row">
+    <div class="form-group mb-2">
+      <label class="form-label">General Images</label>
+      <%= live_file_input @uploads.image %>
+      <section phx-drop-target={@uploads.image.ref}>
+
+      <%# render each image entry %>
+      <%= for entry <- @uploads.image.entries do %>
+        <article class="upload-entry">
+
+          <figure>
+            <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
+            <%= live_img_preview entry, width: 200 %>
+            <figcaption><%= entry.client_name %></figcaption>
+          </figure>
+
+          <%# entry.progress will update automatically for in-flight entries %>
+          <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
+
+          <%# a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 %>
+          <button phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="btn btn-secondary">&times;</button>
+
+          <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
+          <%= for err <- upload_errors(@uploads.image, entry) do %>
+            <p class="alert alert-danger"><%= error_to_string(err) %></p>
+          <% end %>
+
+        </article>
+      <% end %>
+
+      <%# Phoenix.LiveView.Helpers.upload_errors/1 returns a list of error atoms %>
+      <%= for err <- upload_errors(@uploads.image) do %>
+        <p class="alert alert-danger"><%= error_to_string(err) %></p>
+      <% end %>
+
+      </section>
+    </div>
+  </div>
 
     <div>
       <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
     </div>
   </.form>
-</div>
+</div> %>

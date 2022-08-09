@@ -81,3 +81,18 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+# Object storage
+raise_object_storage_config_error = fn(variable) ->
+  raise """
+  environment variable #{variable} is missing.
+  If you're running in dev you need to populate a .env file
+  with this and any other needed variables.
+  If you see this in production you need to populate these
+  variables another way.
+  """
+end
+
+config :plant_aid, PlantAid.ObjectStorage,
+  access_key_id: System.get_env("OBJECT_STORAGE_ACCESS_KEY_ID") || raise_object_storage_config_error.("OBJECT_STORAGE_ACCESS_KEY_ID"),
+  secret_access_key: System.get_env("OBJECT_STORAGE_SECRET_ACCESS_KEY") || raise_object_storage_config_error.("OBJECT_STORAGE_SECRET_ACCESS_KEY")

@@ -7,10 +7,13 @@ defmodule PlantAid.Observations do
   import Ecto.Query, warn: false
   import Geo.PostGIS
   alias PlantAid.Repo
+
   alias PlantAid.Observations.{
     Filter,
     Observation
   }
+
+  # alias PlantAid.Tests.LAMPDetails
   alias PlantAid.Admin.County
 
   defmodule Filters do
@@ -107,7 +110,9 @@ defmodule PlantAid.Observations do
     end
 
     filter county(query, {name, state}) do
-      counties_query = from c in County, select: [c.geom], where: c.name == ^name and c.state == ^state
+      counties_query =
+        from c in County, select: [c.geom], where: c.name == ^name and c.state == ^state
+
       from o in query, where: st_within(o.coordinates, subquery(counties_query))
     end
 
@@ -158,7 +163,13 @@ defmodule PlantAid.Observations do
     |> Enum.map(fn {observation, county} ->
       Map.put(observation, :county, county)
     end)
-    |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
+    |> Repo.preload([
+      :location_type,
+      :host,
+      :host_variety,
+      :suspected_pathology,
+      :lamp_details
+    ])
   end
 
   @doc """
@@ -176,19 +187,33 @@ defmodule PlantAid.Observations do
 
   """
   def get_observation!(id) do
-    {observation, county} = (from o in Observation, where: o.id == ^id, left_join: c in County, on: st_contains(c.geom, o.coordinates), select: {o, c})
-    |> Repo.one!()
+    {observation, county} =
+      from(o in Observation,
+        where: o.id == ^id,
+        left_join: c in County,
+        on: st_contains(c.geom, o.coordinates),
+        select: {o, c}
+      )
+      |> Repo.one!()
 
-    observation = Repo.preload(observation, [:location_type, :host, :host_variety, :suspected_pathology])
-      # Repo.get!(Observation, id)
-      # |> Repo.preload([:location_type, :host, :host_variety, :suspected_pathology])
-
-    {longitude, latitude} = observation.coordinates.coordinates
+    observation = if observation.coordinates do
+      {longitude, latitude} = observation.coordinates.coordinates
+      observation
+      |> Map.put(:latitude, latitude)
+      |> Map.put(:longitude, longitude)
+    else
+      observation
+    end
 
     observation
     |> Map.put(:county, county)
-    |> Map.put(:latitude, latitude)
-    |> Map.put(:longitude, longitude)
+    |> Repo.preload([
+      :location_type,
+      :host,
+      :host_variety,
+      :suspected_pathology,
+      :lamp_details
+    ])
   end
 
   @doc """
@@ -203,11 +228,11 @@ defmodule PlantAid.Observations do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_observation(user, attrs \\ %{}) do
-    %Observation{}
+  def create_observation(%Observation{} = observation, attrs \\ %{}, after_save \\ &{:ok, &1}) do
+    observation
     |> Observation.changeset(attrs)
-    |> Ecto.Changeset.put_change(:user_id, user.id)
     |> Repo.insert()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -222,11 +247,18 @@ defmodule PlantAid.Observations do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_observation(%Observation{} = observation, attrs) do
+  def update_observation(%Observation{} = observation, attrs, after_save \\ &{:ok, &1}) do
     observation
     |> Observation.changeset(attrs)
     |> Repo.update()
+    |> after_save(after_save)
   end
+
+  defp after_save({:ok, observation}, func) do
+    {:ok, _observation} = func.(observation)
+  end
+
+  defp after_save(error, _func), do: error
 
   @doc """
   Deletes a observation.
@@ -258,10 +290,23 @@ defmodule PlantAid.Observations do
     |> Observation.changeset(attrs)
   end
 
+  # def change_submission(_, attrs \\ %{})
+
+  # def change_submission(%Observation{} = observation, attrs) do
+  #   observation
+  #   |> Submission.changeset(attrs)
+  # end
+
+  # def change_submission(%Submission{} = submission, attrs) do
+  #   submission
+  #   |> Submission.changeset(attrs)
+  # end
+
   def update_filter(%Filter{} = filter, attrs) do
     filter
     |> Filter.changeset(attrs)
-    |> Ecto.Changeset.apply_action!(:update) # Supposedly this value doesn't matter, but most examples use :update
+    # Supposedly this value doesn't matter, but most examples use :update
+    |> Ecto.Changeset.apply_action!(:update)
   end
 
   def change_filter(%Filter{} = filter, attrs \\ %{}) do
