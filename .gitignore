@@ -37,3 +37,4 @@ npm-debug.log
 
 # Ignore local .env file
 .env
+env.bat

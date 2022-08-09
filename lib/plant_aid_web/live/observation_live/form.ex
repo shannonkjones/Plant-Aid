@@ -61,10 +61,12 @@ defmodule PlantAidWeb.ObservationLive.Form do
   defp assign_remaining(socket) do
     changeset = Observations.change_observation(socket.assigns.observation)
     selected_host = get_selected_host(changeset, socket.assigns.hosts)
+    research_plot? = research_plot?(changeset, socket.assigns.location_types)
 
     socket
     |> assign(:changeset, changeset)
     |> assign(:selected_host, selected_host)
+    |> assign(:research_plot?, research_plot?)
     |> assign(:page_title, page_title(socket.assigns.live_action))
   end
 
@@ -76,11 +78,13 @@ defmodule PlantAidWeb.ObservationLive.Form do
       |> Map.put(:action, :validate)
 
     selected_host = get_selected_host(changeset, socket.assigns.hosts)
+    research_plot? = research_plot?(changeset, socket.assigns.location_types)
 
     {:noreply,
      socket
      |> assign(:changeset, changeset)
-     |> assign(:selected_host, selected_host)}
+     |> assign(:selected_host, selected_host)
+     |> assign(:research_plot?, research_plot?)}
   end
 
   def handle_event("save", %{"observation" => observation_params}, socket) do
@@ -132,6 +136,13 @@ defmodule PlantAidWeb.ObservationLive.Form do
   defp get_selected_host(changeset, hosts) do
     with host_id <- Ecto.Changeset.get_field(changeset, :host_id) do
       Enum.find(hosts, fn h -> h.id == host_id end) || List.first(hosts)
+    end
+  end
+
+  defp research_plot?(changeset, location_types) do
+    with location_type_id <- Ecto.Changeset.get_field(changeset, :location_type_id) do
+      location_type = Enum.find(location_types, fn lt -> lt.id == location_type_id end) || List.first(location_types)
+      location_type.name == "Research plot"
     end
   end
 

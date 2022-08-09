@@ -24,4 +24,4 @@ mix phx.gen.schema Tests.LAMPCell lamp_cells cell_number:integer disease_presenc
 mix phx.gen.schema Tests.LAMPDetails lamp_details qr_info:string initial_image_urls:array:string final_image_urls:string status:string interpretted_results:map observation_id:references:observations
 
 # What is the story on Research Plot?
-mix phx.gen.html ResearchPlotDetails ResearchPlotDetails research_plot_details observation_id:references:observations treatment:string block:string plant_identifier:string
+mix phx.gen.schema Observations.ResearchPlotDetails research_plot_details observation_id:references:observations treatment:string block:string plant_id:string

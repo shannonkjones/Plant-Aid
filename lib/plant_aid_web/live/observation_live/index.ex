@@ -64,6 +64,25 @@ defmodule PlantAidWeb.ObservationLive.Index do
   end
 
   defp list_observations(filter \\ %{}) do
-    Observations.list_observations(filter)
+    observations = Observations.list_observations(filter)
+    Enum.map(observations, &add_diagnostic_types/1)
+  end
+
+  defp add_diagnostic_types(observation) do
+    diagnostic_types = []
+
+    diagnostic_types = if length(observation.image_urls) > 0 do
+      ["Images" | diagnostic_types]
+    else
+      diagnostic_types
+    end
+
+    diagnostic_types = if observation.lamp_details do
+      ["LAMP" | diagnostic_types]
+    else
+      diagnostic_types
+    end
+
+    Map.put(observation, :diagnostic_types, Enum.join(diagnostic_types, ", "))
   end
 end

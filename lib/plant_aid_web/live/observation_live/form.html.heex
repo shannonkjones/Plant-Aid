@@ -18,7 +18,7 @@
       navigator.geolocation.getCurrentPosition(success, error, options);
     }
   </script> %>
-  <h2><%= @page_title %></h2>
+  <h2 class="pt-2"><%= @page_title %></h2>
 
   <.form
     let={f}
@@ -72,6 +72,7 @@
         <% _ -> %>
       <% end %>
     </div>
+    <hr>
     <h4>Location</h4>
     <div class="row">
       <div class="col-md-6">
@@ -91,13 +92,43 @@
       <%# <button type="button" onclick="populateLocation()" class="btn btn-primary ">Autopopulate Coordinates</button> %>
     </div>
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6">
         <div class="form-group mb-2">
           <%= label f, :location_type_id, class: "form-label" %>
           <%= select f, :location_type_id, Enum.map(@location_types, fn lt -> {lt.name, lt.id} end), class: "form-control" %>
           <%= error_tag f, :location_type_id %>
         </div>
       </div>
+      <%= if @research_plot? do %>
+        <%= inputs_for f, :research_plot_details, fn rpd -> %>
+      <div class="col-12">
+        <div class="row border border-3 rounded-1 mx-4">
+        <h5>Research plot details</h5>
+        <div class="col-md-6">
+          <div class="form-group mb-2">
+            <%= label rpd, :treatment, class: "form-label" %>
+            <%= text_input rpd, :treatment, class: "form-control" %>
+            <%= error_tag rpd, :treatment %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="form-group mb-2">
+            <%= label rpd, :block, class: "form-label" %>
+            <%= text_input rpd, :block, class: "form-control" %>
+            <%= error_tag rpd, :block %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="form-group mb-2">
+            <%= label rpd, :plant_id, class: "form-label" %>
+            <%= text_input rpd, :plant_id, class: "form-control" %>
+            <%= error_tag rpd, :plant_id %>
+          </div>
+        </div>
+        </div>
+        </div>
+        <% end %>
+      <% end %>
       <div class="col-12">
         <div class="form-group mb-2">
           <%= label f, :organic, class: "form-check-label" %>
@@ -106,21 +137,26 @@
         </div>
       </div>
     </div>
-    <div class="form-group mb-2">
-      <%= label f, :control_method, class: "form-label" %>
-      <%= text_input f, :control_method, class: "form-control" %>
-      <%= error_tag f, :control_method %>
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group mb-2">
+          <%= label f, :control_method, class: "form-label" %>
+          <%= text_input f, :control_method, class: "form-control" %>
+          <%= error_tag f, :control_method %>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group mb-2">
+          <%= label f, :notes, class: "form-label" %>
+          <%= text_input f, :notes, class: "form-control" %>
+          <%= error_tag f, :notes %>
+        </div>
+      </div>
     </div>
-    <div class="form-group mb-2">
-      <%= label f, :notes, class: "form-label" %>
-      <%= text_input f, :notes, class: "form-control" %>
-      <%= error_tag f, :notes %>
-    </div>
-
+    <hr>
     <h4>Supporting Data</h4>
-
-      <h5>LAMP</h5>
-      <div class="row">
+    <h5>LAMP</h5>
+      <div class="row border border-3 rounded-1 mx-4">
         <div class="form-group mb-2">
           <label class="form-label">LAMP Initial Image(s)</label>
           <%= if @observation.lamp_details do %>
@@ -132,15 +168,15 @@
             </div>
           <% end %>
           <%= live_file_input @uploads.lamp_initial_image %>
-          <section phx-drop-target={@uploads.lamp_initial_image.ref}>
+          <section class="d-flex flex-wrap" phx-drop-target={@uploads.lamp_initial_image.ref}>
 
           <%# render each image entry %>
           <%= for entry <- @uploads.lamp_initial_image.entries do %>
-            <article class="upload-entry">
+            <article class="upload-entry m-2 p-2 ">
 
               <figure>
                 <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
-                <%= live_img_preview entry, width: 200 %>
+                <%= live_img_preview entry, height: 150 %>
                 <figcaption><%= entry.client_name %></figcaption>
               </figure>
 
@@ -176,11 +212,11 @@
             </div>
           <% end %>
           <%= live_file_input @uploads.lamp_final_image %>
-          <section phx-drop-target={@uploads.lamp_final_image.ref}>
+          <section class="d-flex flex-wrap" phx-drop-target={@uploads.lamp_final_image.ref}>
 
           <%# render each image entry %>
           <%= for entry <- @uploads.lamp_final_image.entries do %>
-            <article class="upload-entry">
+            <article class="upload-entry m-2 p-2">
 
               <figure>
                 <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
@@ -210,9 +246,9 @@
           </section>
         </div>
       </div>
-    
+
     <h5>Images</h5>
-    <div class="row">
+    <div class="row border border-3 rounded-1 mx-4">
       <div class="form-group mb-2">
         <label class="form-label">General Images</label>
         <%= if length(@observation.image_urls) > 0 do %>
@@ -224,11 +260,11 @@
             </div>
           <% end %>
         <%= live_file_input @uploads.image %>
-        <section phx-drop-target={@uploads.image.ref}>
+        <section class="d-flex flex-wrap" phx-drop-target={@uploads.image.ref}>
 
         <%# render each image entry %>
         <%= for entry <- @uploads.image.entries do %>
-          <article class="upload-entry">
+          <article class="upload-entry m-2 p-2">
 
             <figure>
               <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
@@ -259,7 +295,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="py-2">
       <%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary" %>
     </div>
   </.form>

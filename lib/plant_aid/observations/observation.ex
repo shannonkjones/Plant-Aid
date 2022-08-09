@@ -10,6 +10,7 @@ defmodule PlantAid.Observations.Observation do
     Pathology
   }
   alias PlantAid.Diagnostics.LAMPDetails
+  alias PlantAid.Observations.ResearchPlotDetails
 
   schema "observations" do
     field :control_method, :string
@@ -30,6 +31,7 @@ defmodule PlantAid.Observations.Observation do
     belongs_to :suspected_pathology, Pathology
 
     has_one :lamp_details, LAMPDetails
+    has_one :research_plot_details, ResearchPlotDetails
 
     timestamps()
   end
@@ -39,6 +41,7 @@ defmodule PlantAid.Observations.Observation do
     observation
     |> cast(attrs, [:observation_date, :organic, :control_method, :host_other, :image_urls, :latitude, :longitude, :notes, :location_type_id, :suspected_pathology_id, :host_id, :host_variety_id])
     |> cast_assoc(:lamp_details)
+    |> cast_assoc(:research_plot_details)
     |> assoc_constraint(:location_type)
     |> assoc_constraint(:suspected_pathology)
     |> assoc_constraint(:host)

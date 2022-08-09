@@ -1,4 +1,4 @@
-<h1>Listing Observations</h1>
+<h1 class="pt-2">Listing Observations</h1>
 
 <%= if @live_action in [:new, :edit] do %>
   <.modal return_to={Routes.observation_index_path(@socket, :index)}>
@@ -27,23 +27,13 @@
   </.modal>
 <% end %>
 
-Icon options:
-<h5>
-<i class="fa-solid fa-circle-exclamation text-danger"></i>
-<i class="fa-solid fa-circle-check text-success"></i>
-<i class="fa-solid fa-circle-minus text-primary"></i>
-<i class="fa-solid fa-circle text-warning"></i>
-<i class="fa-solid fa-circle-half-stroke text-secondary"></i>
-<i class="fa-solid fa-circle-question text-warning"></i>
-<i class="fa-solid fa-spinner text-secondary"></i>
-</h5>
-
-<div><span><%= live_redirect "New Observation", to: Routes.observation_form_path(@socket, :new) %></span></div>
-
-<div>
-  <span><%= live_patch "Filter", to: Routes.observation_index_path(@socket, :filter) %></span>
-  <span>Results: <%= Enum.count(@observations) %></span>
+<div class="d-flex justify-content-between py-2">
+  <span><%= live_redirect "New Observation", to: Routes.observation_form_path(@socket, :new), class: "btn btn-success" %></span>
+  <div>
+  <span><%= live_patch "Filter (#{Enum.count(@observations)} results)", to: Routes.observation_index_path(@socket, :filter), class: "btn btn-secondary" %></span>
+  </div>
 </div>
+
 
 <%= for observation <- @observations do %>
   <div class="card my-2">
@@ -56,10 +46,10 @@ Icon options:
               <div class="col-md-9">
                 <div class="card-text">
                   <strong>
-                    <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                    <i class="fa-solid fa-circle-half-stroke text-secondary"></i>
                     <%= observation.suspected_pathology.common_name %>
                   </strong>
-                  <small class="text-muted">(Submitted)</small>
+                  <small class="text-muted">(<%= observation.status %>)</small>
                 </div>
               </div>
               <div class="col-md-3">
@@ -69,9 +59,11 @@ Icon options:
               </div>
               <div class="col-11 ">
                 <small>
-                  <div class="card-text"><%= observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %><%= if observation.county, do: "| #{observation.county.name} County (NC)" %></div>
-                  <div class="card-text">PCR, Images</div>
-                  <div class="text-muted">Notes: Here are some truncated notes about the submission from the user...</div>
+                  <div class="card-text"><%= observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %><%= if observation.county, do: " | #{observation.county.name} County (NC)" %></div>
+                  <div class="card-text">
+                  <%= observation.diagnostic_types %>
+                  </div>
+                  <div class="text-muted"><%= observation.notes %></div>
                 </small>
               </div>
             </div>
@@ -97,3 +89,14 @@ Icon options:
     </div>
   </div>
 <% end %>
+
+Icon options:
+<h5>
+<i class="fa-solid fa-circle-exclamation text-danger"></i>
+<i class="fa-solid fa-circle-check text-success"></i>
+<i class="fa-solid fa-circle-minus text-primary"></i>
+<i class="fa-solid fa-circle text-warning"></i>
+<i class="fa-solid fa-circle-half-stroke text-secondary"></i>
+<i class="fa-solid fa-circle-question text-warning"></i>
+<i class="fa-solid fa-spinner text-secondary"></i>
+</h5>
