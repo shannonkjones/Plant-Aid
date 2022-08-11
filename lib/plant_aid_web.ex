@@ -108,10 +108,4 @@ defmodule PlantAidWeb do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
-
-  defimpl Phoenix.HTML.Safe, for: DateTime do
-    def to_iodata(datetime) do
-      Calendar.strftime(datetime, "%m/%d/%Y (%H:%M)")
-    end
-  end
 end

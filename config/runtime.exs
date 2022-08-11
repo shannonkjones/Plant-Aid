@@ -48,7 +48,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("PHX_HOST") || "plant-aid.org"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :plant_aid, PlantAidWeb.Endpoint,
@@ -94,5 +94,8 @@ raise_object_storage_config_error = fn(variable) ->
 end
 
 config :plant_aid, PlantAid.ObjectStorage,
+  domain: System.get_env("OBJECT_STORAGE_DOMAIN") || raise_object_storage_config_error.("OBJECT_STORAGE_DOMAIN"),
+  region: System.get_env("OBJECT_STORAGE_REGION") || raise_object_storage_config_error.("OBJECT_STORAGE_REGION"),
+  bucket: System.get_env("OBJECT_STORAGE_BUCKET") || raise_object_storage_config_error.("OBJECT_STORAGE_BUCKET"),
   access_key_id: System.get_env("OBJECT_STORAGE_ACCESS_KEY_ID") || raise_object_storage_config_error.("OBJECT_STORAGE_ACCESS_KEY_ID"),
   secret_access_key: System.get_env("OBJECT_STORAGE_SECRET_ACCESS_KEY") || raise_object_storage_config_error.("OBJECT_STORAGE_SECRET_ACCESS_KEY")

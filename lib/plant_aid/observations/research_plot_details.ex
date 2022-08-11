@@ -6,7 +6,7 @@ defmodule PlantAid.Observations.ResearchPlotDetails do
 
   schema "research_plot_details" do
     field :block, :string
-    field :plant_id, :string
+    field :plant_number, :string
     field :treatment, :string
 
     belongs_to :observation, Observation
@@ -17,7 +17,7 @@ defmodule PlantAid.Observations.ResearchPlotDetails do
   @doc false
   def changeset(research_plot_details, attrs) do
     research_plot_details
-    |> cast(attrs, [:treatment, :block, :plant_id])
-    # |> validate_required([:treatment, :block, :plant_id])
+    |> cast(attrs, [:treatment, :block, :plant_number])
+    # |> validate_required([:treatment, :block, :plant_number])
   end
 end

@@ -38,7 +38,7 @@
 
   <li>
     <strong>Observation date:</strong>
-    <%= @observation.observation_date %>
+    <%= @observation.observation_date && Calendar.strftime(@observation.observation_date, "%m/%d/%Y (%H:%M)") %>
   </li>
 
   <li>

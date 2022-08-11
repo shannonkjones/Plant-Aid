@@ -34,12 +34,6 @@ config :plant_aid, PlantAidWeb.Endpoint,
     }
   ]
 
-# Object storage
-config :plant_aid, PlantAid.ObjectStorage,
-  domain: "digitaloceanspaces.com",
-  region: "nyc3",
-  bucket: "padb-dev"
-
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
