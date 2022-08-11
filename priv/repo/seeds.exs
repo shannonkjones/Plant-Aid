@@ -77,35 +77,35 @@ PlantAid.Repo.insert_all(Host, hosts)
 
 # Host varieties
 # TODO: don't love the hard coding of IDs
-host_varieties =
-  [
-    # Temporary
-    {1, "Default"},
-    {2, "Default"},
-    # Tomato
-    {3, "German Johnson"},
-    {3, "Mortgage Lifter"},
-    {3, "Celebrity"},
-    {3, "Amy's Sugar Gem"},
-    # Potato
-    {4, "Butte"},
-    {4, "Onaway"},
-    {4, "Elba"},
-    {4, "Yukon Gold"},
-    {4, "All-Blue"},
-    {4, "Russian Banana"},
-    # Rhododendron
-    {5, "Elviira"},
-    {5, "Windsong"},
-    {5, "White Angel"},
-    {5, "Black Satin"},
-    {5, "Blue Peter"}
-  ]
-  |> Enum.map(fn {host_id, name} ->
-    %{host_id: host_id, name: name, inserted_at: timestamp, updated_at: timestamp}
-  end)
+# host_varieties =
+#   [
+#     # Temporary
+#     {1, "Default"},
+#     {2, "Default"},
+#     # Tomato
+#     {3, "German Johnson"},
+#     {3, "Mortgage Lifter"},
+#     {3, "Celebrity"},
+#     {3, "Amy's Sugar Gem"},
+#     # Potato
+#     {4, "Butte"},
+#     {4, "Onaway"},
+#     {4, "Elba"},
+#     {4, "Yukon Gold"},
+#     {4, "All-Blue"},
+#     {4, "Russian Banana"},
+#     # Rhododendron
+#     {5, "Elviira"},
+#     {5, "Windsong"},
+#     {5, "White Angel"},
+#     {5, "Black Satin"},
+#     {5, "Blue Peter"}
+#   ]
+#   |> Enum.map(fn {host_id, name} ->
+#     %{host_id: host_id, name: name, inserted_at: timestamp, updated_at: timestamp}
+#   end)
 
-PlantAid.Repo.insert_all(HostVariety, host_varieties)
+# PlantAid.Repo.insert_all(HostVariety, host_varieties)
 
 # Counties
 counties =

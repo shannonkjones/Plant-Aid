@@ -62,13 +62,15 @@
             </div>
           </div>
         <% %PlantAid.Admin.Host{} -> %>
-          <div class="col-md-6">
-            <div class="form-group mb-2">
-              <%= label f, :host_variety_id, class: "form-label" %>
-              <%= select f, :host_variety_id, Enum.map(@selected_host.varieties, fn v -> {v.name, v.id} end), class: "form-control" %>
-              <%= error_tag f, :host_variety_id %>
+          <%= if length(@selected_host.varieties) > 0 do %>
+            <div class="col-md-6">
+              <div class="form-group mb-2">
+                <%= label f, :host_variety_id, class: "form-label" %>
+                <%= select f, :host_variety_id, Enum.map(@selected_host.varieties, fn v -> {v.name, v.id} end), class: "form-control" %>
+                <%= error_tag f, :host_variety_id %>
+              </div>
             </div>
-          </div>
+          <% end %>
         <% _ -> %>
       <% end %>
     </div>

@@ -61,7 +61,7 @@ observations = for u <- users do
     if host.common_name == "Other" do
       Map.put(observation, :host_other, Enum.random(words))
     else
-      if host.varieties do
+      if length(host.varieties) > 0 do
         Map.put(observation, :host_variety_id, Enum.random(host.varieties).id)
       else
         observation
