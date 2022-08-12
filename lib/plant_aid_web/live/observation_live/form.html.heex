@@ -77,20 +77,12 @@
     <hr>
     <h4>Location</h4>
     <div id="location" class="row" phx-hook="GetCurrentPosition">
-      <button type="button" id="getCurrentPosition" class="btn btn-secondary">Use Current Position</button>
-      <div class="col-md-6">
-        <div class="form-group mb-2">
-          <%= label f, :latitude, class: "form-label" %>
-          <%= text_input f, :latitude, class: "form-control" %>
-          <%= error_tag f, :latitude %>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group mb-2">
-          <%= label f, :longitude, class: "form-label" %>
-          <%= text_input f, :longitude, class: "form-control" %>
-          <%= error_tag f, :longitude %>
-        </div>
+      <div class="col input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Lat</span>
+        <%= text_input f, :latitude, class: "form-control" %>
+        <span class="input-group-text" id="basic-addon1">Long</span>
+        <%= text_input f, :longitude, class: "form-control" %>
+        <button type="button" id="getCurrentPosition" class="btn btn-secondary">Get position</button>
       </div>
       <%# <button type="button" onclick="populateLocation()" class="btn btn-primary ">Autopopulate Coordinates</button> %>
     </div>
