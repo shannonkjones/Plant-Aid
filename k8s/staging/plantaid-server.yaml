@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: plantaid-server
-        image: chrej/plantaid-server:306176d
+        image: chrej/plantaid-server:6e00b62
         ports:
         - name: phoenix
           containerPort: 4000

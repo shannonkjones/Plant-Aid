@@ -28,6 +28,30 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 // import Alpine from "alpinejs"
 
+let Hooks = {}
+Hooks.GetCurrentPosition = {
+  mounted() {
+    let hook = this, $button = document.getElementById("getCurrentPosition");
+
+    $button.onclick = (e) => {
+      let options = {
+        enableHighAccuracy: true,
+        timeout: 15000
+      };
+
+      let success = (position) => {
+        hook.pushEvent("current_position", {latitude: position.coords.latitude, longitude: position.coords.longitude});
+      }
+
+      let error = (error) => {
+        hook.pushEvent("current_position_error", {message: error.message});
+      }
+
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }
+  }
+}
+
 let Uploaders = {}
 
 Uploaders.S3 = function (entries, onViewError) {
@@ -55,6 +79,7 @@ Uploaders.S3 = function (entries, onViewError) {
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
+  hooks: Hooks,
   uploaders: Uploaders,
   // dom: {
   //   onBeforeElUpdated(from, to) {

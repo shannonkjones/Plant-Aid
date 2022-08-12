@@ -5,6 +5,6 @@ metadata:
 data:
   PHX_SERVER: "true"
   PHX_HOST: "staging.plant-aid.org"
-  OBJECT_STORAGE_DOMAIN: "digitaloceanspaces.org"
+  OBJECT_STORAGE_DOMAIN: "digitaloceanspaces.com"
   OBJECT_STORAGE_REGION: "nyc3"
   OBJECT_STORAGE_BUCKET: "padb-dev"

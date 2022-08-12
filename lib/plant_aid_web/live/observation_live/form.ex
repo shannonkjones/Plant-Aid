@@ -95,6 +95,23 @@ defmodule PlantAidWeb.ObservationLive.Form do
     {:noreply, cancel_upload(socket, :image, ref)}
   end
 
+  def handle_event(
+        "current_position",
+        %{"latitude" => latitude, "longitude" => longitude},
+        socket
+      ) do
+    changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_change(:latitude, latitude)
+      |> Ecto.Changeset.put_change(:longitude, longitude)
+
+    {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def handle_event("current_position_error", %{"message" => message}, socket) do
+    {:noreply, put_flash(socket, :error, "Error getting current position: '#{message}'. Refreshing may fix this.")}
+  end
+
   defp save_observation(socket, :edit, observation_params) do
     observation_params = put_upload_urls(observation_params, socket)
 
@@ -141,7 +158,10 @@ defmodule PlantAidWeb.ObservationLive.Form do
 
   defp research_plot?(changeset, location_types) do
     with location_type_id <- Ecto.Changeset.get_field(changeset, :location_type_id) do
-      location_type = Enum.find(location_types, fn lt -> lt.id == location_type_id end) || List.first(location_types)
+      location_type =
+        Enum.find(location_types, fn lt -> lt.id == location_type_id end) ||
+          List.first(location_types)
+
       location_type && location_type.name == "Research plot"
     end
   end
