@@ -15,13 +15,16 @@ location_types = Admin.list_location_types()
 hosts = Admin.list_hosts()
 pathologies = Admin.list_pathologies()
 
+# hosts_to_pathologies = %{
+#     "Tanoak" => ["Sudden Oak Death"],
+#     "Bay Laurel" => ["Sudden Oak Death"],
+#     "Tomato" => ["Late Blight", "Tomato Spotted Wilt Virus"],
+#     "Potato" => ["Late Blight"],
+#     "Rhododendron" => ["Sudden Oak Death"],
+#     "Other" => ["Sudden Oak Death", "Late Blight", "Tomato Spotted Wilt Virus"],
+# }
 hosts_to_pathologies = %{
-    "Tanoak" => ["Sudden Oak Death"],
-    "Bay Laurel" => ["Sudden Oak Death"],
-    "Tomato" => ["Late Blight", "Tomato Spotted Wilt Virus"],
-    "Potato" => ["Late Blight"],
-    "Rhododendron" => ["Sudden Oak Death"],
-    "Other" => ["Sudden Oak Death", "Late Blight", "Tomato Spotted Wilt Virus"],
+  "Tomato" => ["Late Blight"]
 }
 
 words = [

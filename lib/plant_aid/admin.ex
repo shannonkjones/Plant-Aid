@@ -28,7 +28,9 @@ defmodule PlantAid.Admin do
 
   """
   def list_location_types do
-    Repo.all(LocationType)
+    LocationType
+    |> reverse_order()
+    |> Repo.all()
   end
 
   @doc """

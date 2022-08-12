@@ -47,7 +47,7 @@
                 <div class="card-text">
                   <strong>
                     <i class="fa-solid fa-circle-half-stroke text-secondary"></i>
-                    <%= observation.suspected_pathology.common_name %>
+                    <%= observation.suspected_pathology && observation.suspected_pathology.common_name %>
                   </strong>
                   <small class="text-muted">(<%= observation.status %>)</small>
                 </div>
@@ -59,7 +59,7 @@
               </div>
               <div class="col-11 ">
                 <small>
-                  <div class="card-text"><%= observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %><%= if observation.county, do: " | #{observation.county.name} County (NC)" %></div>
+                  <div class="card-text"><%= observation.host && observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %><%= if observation.county, do: " | #{observation.county.name} County (NC)" %></div>
                   <div class="card-text">
                   <%= observation.diagnostic_types %>
                   </div>

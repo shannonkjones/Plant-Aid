@@ -22,15 +22,19 @@ timestamp = DateTime.utc_now() |> DateTime.truncate(:second)
 
 # Location types
 location_types =
+  # [
+  #   "Commercial field",
+  #   "Home garden",
+  #   "Sentinel plot",
+  #   "Research plot",
+  #   "Greenhouse",
+  #   "Nursery",
+  #   "Forest",
+  #   "Other"
+  # ]
   [
-    "Commercial field",
-    "Home garden",
-    "Sentinel plot",
-    "Research plot",
-    "Greenhouse",
-    "Nursery",
-    "Forest",
-    "Other"
+    "Other",
+    "Research plot"
   ]
   |> Enum.map(fn name -> %{name: name, inserted_at: timestamp, updated_at: timestamp} end)
 
@@ -39,9 +43,9 @@ PlantAid.Repo.insert_all(LocationType, location_types)
 # Pathologies
 pathologies =
   [
-    {"Sudden Oak Death", "Phytophthora ramorum"},
+    # {"Sudden Oak Death", "Phytophthora ramorum"},
     {"Late Blight", "Phytophthora infestans"},
-    {"Tomato Spotted Wilt Virus", nil}
+    # {"Tomato Spotted Wilt Virus", nil}
   ]
   |> Enum.map(fn {common_name, scientific_name} ->
     %{
@@ -57,12 +61,11 @@ PlantAid.Repo.insert_all(Pathology, pathologies)
 # Hosts
 hosts =
   [
-    {"Tanoak", "Notholithocarpus densiflorus"},
-    {"Bay Laurel", "Umbellularia californica"},
+    # {"Tanoak", "Notholithocarpus densiflorus"},
+    # {"Bay Laurel", "Umbellularia californica"},
     {"Tomato", "Solanum lycopersicum"},
-    {"Potato", "Solanum tuberosum"},
-    {"Rhododendron", "Ericaceae"},
-    {"Other", nil}
+    # {"Potato", "Solanum tuberosum"},
+    # {"Rhododendron", "Ericaceae"},
   ]
   |> Enum.map(fn {common_name, scientific_name} ->
     %{
