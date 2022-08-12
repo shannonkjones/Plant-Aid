@@ -168,8 +168,9 @@ defmodule PlantAid.Observations do
       :host,
       :host_variety,
       :suspected_pathology,
+      :research_plot_details,
       :lamp_details,
-      :research_plot_details
+      :voc_details
     ])
   end
 
@@ -213,8 +214,9 @@ defmodule PlantAid.Observations do
       :host,
       :host_variety,
       :suspected_pathology,
+      :research_plot_details,
       :lamp_details,
-      :research_plot_details
+      :voc_details
     ])
   end
 

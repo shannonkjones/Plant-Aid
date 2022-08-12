@@ -6,7 +6,7 @@ defmodule PlantAidWeb.ObservationLive.Form do
   alias PlantAid.ObjectStorage
   alias PlantAid.Observations
   alias PlantAid.Observations.Observation
-  alias PlantAid.Diagnostics.LAMPDetails
+  alias PlantAid.Diagnostics.{LAMPDetails, VOCDetails}
 
   @impl true
   def mount(_params, %{"user_token" => user_token}, socket) do
@@ -35,6 +35,11 @@ defmodule PlantAidWeb.ObservationLive.Form do
        accept: ~w(.jpg .jpeg .png),
        max_entries: 10,
        external: &presign_upload/2
+     )
+     |> allow_upload(:voc_result_image,
+       accept: ~w(.jpg .jpeg .png),
+       max_entries: 10,
+       external: &presign_upload/2
      )}
   end
 
@@ -55,7 +60,7 @@ defmodule PlantAidWeb.ObservationLive.Form do
 
   defp apply_action(socket, :new, _) do
     socket
-    |> assign(:observation, %Observation{user: socket.assigns.current_user, lamp_details: nil})
+    |> assign(:observation, %Observation{user: socket.assigns.current_user, lamp_details: nil, voc_details: nil})
   end
 
   defp assign_remaining(socket) do
@@ -109,7 +114,12 @@ defmodule PlantAidWeb.ObservationLive.Form do
   end
 
   def handle_event("current_position_error", %{"message" => message}, socket) do
-    {:noreply, put_flash(socket, :error, "Error getting current position: '#{message}'. Refreshing may fix this.")}
+    {:noreply,
+     put_flash(
+       socket,
+       :error,
+       "Error getting current position: '#{message}'. Refreshing may fix this."
+     )}
   end
 
   defp save_observation(socket, :edit, observation_params) do
@@ -177,6 +187,7 @@ defmodule PlantAidWeb.ObservationLive.Form do
     observation_params
     |> put_image_urls(socket)
     |> put_lamp_details(socket)
+    |> put_voc_details(socket)
   end
 
   defp put_image_urls(observation_params, socket) do
@@ -208,6 +219,24 @@ defmodule PlantAidWeb.ObservationLive.Form do
       }
 
       Map.put(observation_params, "lamp_details", lamp_details_params)
+    else
+      observation_params
+    end
+  end
+
+  defp put_voc_details(%{} = observation_params, socket) do
+    new_result_image_urls = get_upload_urls(socket, :voc_result_image)
+
+    if length(new_result_image_urls) > 0 do
+      voc_details = socket.assigns.observation.voc_details || %VOCDetails{}
+
+      voc_details_params = %{
+        "id" => voc_details.id,
+        "result_image_urls" =>
+          Enum.concat(voc_details.result_image_urls, new_result_image_urls),
+      }
+
+      Map.put(observation_params, "voc_details", voc_details_params)
     else
       observation_params
     end

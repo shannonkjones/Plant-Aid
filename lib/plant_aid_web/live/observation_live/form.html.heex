@@ -241,6 +241,54 @@
           </section>
         </div>
       </div>
+    
+    <h5>VOC</h5>
+      <div class="row border border-3 rounded-1 mx-4">
+        <div class="form-group mb-2">
+          <label class="form-label">VOC Result Image(s)</label>
+          <%= if @observation.voc_details do %>
+            <div>Uploaded Images</div>
+            <div>
+              <%= for url <- @observation.voc_details.result_image_urls do %>
+                <img src={url} height="200">
+              <% end %>
+            </div>
+          <% end %>
+          <%= live_file_input @uploads.voc_result_image %>
+          <section class="d-flex flex-wrap" phx-drop-target={@uploads.voc_result_image.ref}>
+
+          <%# render each image entry %>
+          <%= for entry <- @uploads.voc_result_image.entries do %>
+            <article class="upload-entry m-2 p-2 ">
+
+              <figure>
+                <%# Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview %>
+                <%= live_img_preview entry, height: 150 %>
+                <figcaption><%= entry.client_name %></figcaption>
+              </figure>
+
+              <%# entry.progress will update automatically for in-flight entries %>
+              <progress value={entry.progress} max="100"> <%= entry.progress %>% </progress>
+
+              <%# a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 %>
+              <button phx-click="cancel-upload" phx-value-ref={entry.ref} aria-label="cancel" class="btn btn-secondary" type="button">&times;</button>
+
+              <%# Phoenix.LiveView.Helpers.upload_errors/2 returns a list of error atoms %>
+              <%= for err <- upload_errors(@uploads.voc_result_image, entry) do %>
+                <p class="alert alert-danger"><%= error_to_string(err) %></p>
+              <% end %>
+
+            </article>
+          <% end %>
+
+          <%# Phoenix.LiveView.Helpers.upload_errors/1 returns a list of error atoms %>
+          <%= for err <- upload_errors(@uploads.voc_result_image) do %>
+            <p class="alert alert-danger"><%= error_to_string(err) %></p>
+          <% end %>
+
+          </section>
+        </div>
+      </div>
 
     <h5>Images</h5>
     <div class="row border border-3 rounded-1 mx-4">
