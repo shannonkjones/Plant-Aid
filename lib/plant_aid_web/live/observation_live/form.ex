@@ -142,7 +142,7 @@ defmodule PlantAidWeb.ObservationLive.Form do
   defp research_plot?(changeset, location_types) do
     with location_type_id <- Ecto.Changeset.get_field(changeset, :location_type_id) do
       location_type = Enum.find(location_types, fn lt -> lt.id == location_type_id end) || List.first(location_types)
-      location_type.name == "Research plot"
+      location_type && location_type.name == "Research plot"
     end
   end
 
