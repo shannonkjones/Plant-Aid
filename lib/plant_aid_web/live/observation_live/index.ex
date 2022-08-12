@@ -77,6 +77,12 @@ defmodule PlantAidWeb.ObservationLive.Index do
       diagnostic_types
     end
 
+    diagnostic_types = if observation.voc_details do
+      ["VOC" | diagnostic_types]
+    else
+      diagnostic_types
+    end
+
     diagnostic_types = if observation.lamp_details do
       ["LAMP" | diagnostic_types]
     else
