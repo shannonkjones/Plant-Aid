@@ -8,7 +8,7 @@ defmodule PlantAid.Accounts.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
-    field :roles, {:array, Ecto.Enum}, values: [:superuser, :admin, :researcher]
+    field :roles, {:array, Ecto.Enum}, values: [:superuser, :admin, :researcher], default: []
 
     has_many :observations, PlantAid.Observations.Observation
 
