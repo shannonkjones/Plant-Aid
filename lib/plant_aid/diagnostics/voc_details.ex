@@ -4,6 +4,7 @@ defmodule PlantAid.Diagnostics.VOCDetails do
 
   alias PlantAid.Observations.Observation
 
+  @derive {Jason.Encoder, only: [:disease_presence, :status]}
   schema "voc_details" do
     field :disease_presence, :float
     field :result_image_urls, {:array, :string}, default: []

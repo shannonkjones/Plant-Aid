@@ -3,6 +3,7 @@ defmodule PlantAid.Admin.Pathology do
   import Ecto.Changeset
   @timestamps_opts [type: :utc_datetime]
 
+  @derive {Jason.Encoder, only: [:common_name, :scientific_name]}
   schema "pathologies" do
     field :common_name, :string
     field :scientific_name, :string

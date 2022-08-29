@@ -22,18 +22,27 @@
       title={@page_title}
       action={@live_action}
       filter={@filter}
-      return_to={Routes.observation_index_path(@socket, :index)}
+      return_to={Routes.observation_index_path(@socket, :index)}ß
     />
   </.modal>
 <% end %>
 
 <div class="d-flex justify-content-between py-2">
-  <span><%= live_redirect "New Observation", to: Routes.observation_form_path(@socket, :new), class: "btn btn-success" %></span>
+  <span>
+    <%= live_redirect("New Observation",
+      to: Routes.observation_form_path(@socket, :new),
+      class: "btn btn-success"
+    ) %>
+  </span>
   <div>
-  <span><%= live_patch "Filter (#{Enum.count(@observations)} results)", to: Routes.observation_index_path(@socket, :filter), class: "btn btn-secondary" %></span>
+    <span>
+      <%= live_patch("Filter (#{Enum.count(@observations)} results)",
+        to: Routes.observation_index_path(@socket, :filter),
+        class: "btn btn-secondary"
+      ) %>
+    </span>
   </div>
 </div>
-
 
 <%= for observation <- @observations do %>
   <div class="card my-2">
@@ -41,47 +50,80 @@
       <div class="container">
         <div class="row">
           <div class="col-11">
-          <%= link to: Routes.observation_show_path(@socket, :show, observation), class: "text-dark text-decoration-none" do %>
-            <div class="row">
-              <div class="col-md-9">
-                <div class="card-text">
-                  <strong>
-                    <i class="fa-solid fa-circle-half-stroke text-secondary"></i>
-                    <%= observation.suspected_pathology && observation.suspected_pathology.common_name %>
-                  </strong>
-                  <small class="text-muted">(<%= observation.status %>)</small>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-md-end">
-                  <em><small><%= observation.observation_date && Calendar.strftime(observation.observation_date, "%m/%d/%Y (%H:%M)") %></small></em>
-                </div>
-              </div>
-              <div class="col-11 ">
-                <small>
-                  <div class="card-text"><%= observation.host && observation.host.common_name %> <%= if observation.host_variety, do: "(#{observation.host_variety.name})" %><%= if observation.county, do: " | #{observation.county.name} County (NC)" %></div>
+            <%= link to: Routes.observation_show_path(@socket, :show, observation), class: "text-dark text-decoration-none" do %>
+              <div class="row">
+                <div class="col-md-9">
                   <div class="card-text">
-                  <%= observation.diagnostic_types %>
+                    <strong>
+                      <i class="fa-solid fa-circle-half-stroke text-secondary"></i>
+                      <%= observation.suspected_pathology &&
+                        observation.suspected_pathology.common_name %>
+                    </strong>
+                    <small class="text-muted">(<%= observation.status %>)</small>
                   </div>
-                  <div class="text-muted"><%= observation.notes %></div>
-                </small>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-md-end">
+                    <em>
+                      <small>
+                        <%= observation.observation_date &&
+                          Calendar.strftime(observation.observation_date, "%m/%d/%Y (%H:%M)") %>
+                      </small>
+                    </em>
+                  </div>
+                </div>
+                <div class="col-11 ">
+                  <small>
+                    <div class="card-text">
+                      <%= observation.host && observation.host.common_name %> <%= if observation.host_variety,
+                        do: "(#{observation.host_variety.name})" %><%= if observation.county,
+                        do: " | #{observation.county.name} County (NC)" %>
+                    </div>
+                    <div class="card-text">
+                      <%= observation.diagnostic_types %>
+                    </div>
+                    <div class="text-muted"><%= observation.notes %></div>
+                  </small>
+                </div>
               </div>
-            </div>
             <% end %>
           </div>
           <div class="col-1 align-middle">
             <h5 class="text-end align-middle">
               <!-- Default dropstart button -->
-            <div class="btn-group dropstart">
-              <a type="button" class="text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= live_redirect "Show", to: Routes.observation_show_path(@socket, :show, observation), class: "text-secondary text-decoration-none" %></li>
-                <li><%= live_patch "Edit", to: Routes.observation_form_path(@socket, :edit, observation), class: "text-secondary text-decoration-none" %></li>
-                <li><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: observation.id, data: [confirm: "Are you sure?"], class: "text-secondary text-decoration-none" %></li>
-              </ul>
-            </div>
+              <div class="btn-group dropstart">
+                <a
+                  type="button"
+                  class="text-secondary"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <%= live_redirect("Show",
+                      to: Routes.observation_show_path(@socket, :show, observation),
+                      class: "text-secondary text-decoration-none"
+                    ) %>
+                  </li>
+                  <li>
+                    <%= live_patch("Edit",
+                      to: Routes.observation_form_path(@socket, :edit, observation),
+                      class: "text-secondary text-decoration-none"
+                    ) %>
+                  </li>
+                  <li>
+                    <%= link("Delete",
+                      to: "#",
+                      phx_click: "delete",
+                      phx_value_id: observation.id,
+                      data: [confirm: "Are you sure?"],
+                      class: "text-secondary text-decoration-none"
+                    ) %>
+                  </li>
+                </ul>
+              </div>
             </h5>
           </div>
         </div>
@@ -89,14 +131,19 @@
     </div>
   </div>
 <% end %>
-
 Icon options:
 <h5>
-<i class="fa-solid fa-circle-exclamation text-danger"></i>
-<i class="fa-solid fa-circle-check text-success"></i>
-<i class="fa-solid fa-circle-minus text-primary"></i>
-<i class="fa-solid fa-circle text-warning"></i>
-<i class="fa-solid fa-circle-half-stroke text-secondary"></i>
-<i class="fa-solid fa-circle-question text-warning"></i>
-<i class="fa-solid fa-spinner text-secondary"></i>
+  <i class="fa-solid fa-circle-exclamation text-danger"></i>
+  <i class="fa-solid fa-circle-check text-success"></i>
+  <i class="fa-solid fa-circle-minus text-primary"></i>
+  <i class="fa-solid fa-circle text-warning"></i>
+  <i class="fa-solid fa-circle-half-stroke text-secondary"></i>
+  <i class="fa-solid fa-circle-question text-warning"></i>
+  <i class="fa-solid fa-spinner text-secondary"></i>
 </h5>
+
+<.live_component
+  module={PlantAidWeb.ObservationLive.MapComponent}
+  id="map"
+  observations={@observations}
+/>

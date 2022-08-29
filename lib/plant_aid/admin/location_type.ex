@@ -3,6 +3,7 @@ defmodule PlantAid.Admin.LocationType do
   import Ecto.Changeset
   @timestamps_opts [type: :utc_datetime]
 
+  @derive {Jason.Encoder, only: [:name]}
   schema "location_types" do
     field :name, :string
 

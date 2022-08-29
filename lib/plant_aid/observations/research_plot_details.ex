@@ -4,6 +4,7 @@ defmodule PlantAid.Observations.ResearchPlotDetails do
 
   alias PlantAid.Observations.Observation
 
+  @derive {Jason.Encoder, only: [:block, :plant_number, :treatment]}
   schema "research_plot_details" do
     field :block, :string
     field :plant_number, :string

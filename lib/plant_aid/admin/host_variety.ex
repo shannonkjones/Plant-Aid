@@ -3,6 +3,7 @@ defmodule PlantAid.Admin.HostVariety do
   import Ecto.Changeset
   @timestamps_opts [type: :utc_datetime]
 
+  @derive {Jason.Encoder, only: [:name]}
   schema "host_varieties" do
     field :name, :string
 

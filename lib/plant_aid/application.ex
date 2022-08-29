@@ -15,9 +15,10 @@ defmodule PlantAid.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: PlantAid.PubSub},
       # Start the Endpoint (http/https)
-      PlantAidWeb.Endpoint
+      PlantAidWeb.Endpoint,
       # Start a worker by calling: PlantAid.Worker.start_link(arg)
       # {PlantAid.Worker, arg}
+      PlantAid.Observations.AggregatesAgent
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

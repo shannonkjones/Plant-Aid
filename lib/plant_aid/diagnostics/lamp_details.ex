@@ -4,6 +4,7 @@ defmodule PlantAid.Diagnostics.LAMPDetails do
 
   alias PlantAid.Observations.Observation
 
+  @derive {Jason.Encoder, only: [:interpretted_results, :status]}
   schema "lamp_details" do
     field :final_image_urls, {:array, :string}, default: []
     field :initial_image_urls, {:array, :string}, default: []

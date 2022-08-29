@@ -13,6 +13,19 @@ defmodule PlantAid.Observations.Observation do
   alias PlantAid.Diagnostics.{LAMPDetails, VOCDetails}
   alias PlantAid.Observations.ResearchPlotDetails
 
+  @derive {Jason.Encoder,
+           only: [
+             :coordinates,
+             :observation_date,
+             :status,
+             :host,
+             :host_variety,
+             :location_type,
+             :suspected_pathology,
+             :research_plot_details,
+             :lamp_details,
+             :voc_details
+           ]}
   schema "observations" do
     field :control_method, :string
     field :coordinates, Geo.PostGIS.Geometry

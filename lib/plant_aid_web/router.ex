@@ -105,8 +105,15 @@ defmodule PlantAidWeb.Router do
     resources "/location_types", LocationTypeController
     resources "/counties", CountyController
     resources "/pathologies", PathologyController
+
     resources "/hosts", HostController do
       resources "/varieties", HostVarietyController, as: "variety"
     end
+  end
+
+  scope "/api", PlantAidWeb do
+    pipe_through [:api]
+
+    get "/county_aggregates", AggregateController, :county_aggregates
   end
 end

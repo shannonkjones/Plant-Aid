@@ -28,6 +28,9 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 // import Alpine from "alpinejs"
 
+import "./mapbox"
+import mapboxgl from "mapbox-gl"
+
 let Hooks = {}
 Hooks.GetCurrentPosition = {
   mounted() {
@@ -40,11 +43,11 @@ Hooks.GetCurrentPosition = {
       };
 
       let success = (position) => {
-        hook.pushEvent("current_position", {latitude: position.coords.latitude, longitude: position.coords.longitude});
+        hook.pushEvent("current_position", { latitude: position.coords.latitude, longitude: position.coords.longitude });
       }
 
       let error = (error) => {
-        hook.pushEvent("current_position_error", {message: error.message});
+        hook.pushEvent("current_position_error", { message: error.message });
       }
 
       navigator.geolocation.getCurrentPosition(success, error, options);
@@ -94,6 +97,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" })
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
+window.addEventListener("phx:test1", event => console.log(event));
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()
@@ -103,6 +107,7 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
+window.mapboxgl = mapboxgl
 // window.Alpine = Alpine
 // Alpine.start()
 

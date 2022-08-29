@@ -3,6 +3,7 @@ defmodule PlantAid.Admin.County do
   import Ecto.Changeset
   @timestamps_opts [type: :utc_datetime]
 
+  @derive {Jason.Encoder, only: [:name, :state]}
   schema "counties" do
     field :name, :string
     field :state, :string

@@ -174,6 +174,19 @@ defmodule PlantAid.Observations do
     ])
   end
 
+  def get_county_aggregates() do
+    from(c in County,
+      left_join: o in Observation,
+      on: st_contains(c.geom, o.coordinates),
+      select: {c, count(o.id)},
+      group_by: [c.id]
+    )
+    |> Repo.all()
+    |> Enum.map(fn {county, count} ->
+      Map.put(county, :observation_count, count)
+    end)
+  end
+
   @doc """
   Gets a single observation.
 
@@ -198,14 +211,16 @@ defmodule PlantAid.Observations do
       )
       |> Repo.one!()
 
-    observation = if observation.coordinates do
-      {longitude, latitude} = observation.coordinates.coordinates
-      observation
-      |> Map.put(:latitude, latitude)
-      |> Map.put(:longitude, longitude)
-    else
-      observation
-    end
+    observation =
+      if observation.coordinates do
+        {longitude, latitude} = observation.coordinates.coordinates
+
+        observation
+        |> Map.put(:latitude, latitude)
+        |> Map.put(:longitude, longitude)
+      else
+        observation
+      end
 
     observation
     |> Map.put(:county, county)
