@@ -176,7 +176,7 @@ defmodule PlantAid.Observations do
 
   def get_county_aggregates() do
     from(c in County,
-      left_join: o in Observation,
+      inner_join: o in Observation,
       on: st_contains(c.geom, o.coordinates),
       select: {c, count(o.id)},
       group_by: [c.id]

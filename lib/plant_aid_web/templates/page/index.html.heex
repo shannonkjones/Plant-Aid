@@ -1,29 +1,54 @@
+<style>
+#map-sidebar nav a {color: grey; border-radius:0}
+#map-sidebar nav a.active {background-color: #39ad7f; color: white}
+#map-sidebar nav a:hover {background-color: #257354; color: white}
+</style>
 <div class="container">
   <div class="row py-4">
     <div class="col-12">
       <h1>Welcome to PlantAid!</h1>
       <div>
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum."
+        "This is the landing page for PlantAid. This would be a good place to briefly describe what
+        PlantAid is and why it's cool."
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
+  <div class="row g-0" style="height: calc(100vh - 150px); max-height: calc(800px - 150px);">
+    <div id="map-sidebar" class="col-lg-2" style="background-color: #424242" >
+      <nav class="nav flex-column nav-pills">
+        <a class="nav-link active" href="#">Late Blight</a>
+        <a class="nav-link" href="#">Early Blight</a>
+        <a class="nav-link" href="#">Tomato Mosaic Virus</a>
+        <a class="nav-link" href="#">Something else</a>
+      </nav>
+    </div>
+    <div class="col-lg-10">
       <div id="map" style="height: calc(100vh - 150px); max-height: calc(800px - 150px);"></div>
+    </div>
+  </div>
+  <div class="row py-2">
+    <div class="col d-flex">
+        <div style="height: 15px; width: 15px; background-color: #fcef72"></div>
+        <div> 1</div>
+        <div style="height: 15px; width: 15px; background-color: #e89c23"></div>
+        <div> 3</div>
+        <div style="height: 15px; width: 15px; background-color: #941510"></div>
+        <div> 6</div>
+
+    </div>
+  </div>
+</div>
+
       <script>
         mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhbmtqNjg3IiwiYSI6ImNsNHlneGluejFqaDkzam5rNmc1Nmg1c2oifQ.OKCoEsxl4NF19EnW95zc7A';
         const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/dark-v10',
+        style: 'mapbox://styles/mapbox/light-v10',
         center: [-103.5917, 40.6699],
         zoom: 3
         });
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-right');
 
         map.on('load', () => {
         // Add a new source from our GeoJSON data and
@@ -31,8 +56,7 @@
         // add the point_count property to your source data.
         map.addSource('counties', {
         type: 'geojson',
-        // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
-        // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+        // Point to GeoJSON data.
         data: 'http://localhost:4000/api/county_aggregates',
         });
 
@@ -45,11 +69,11 @@
             'fill-color': [
               'step',
               ['get', 'observation_count'],
-              '#51bbd6',
+              '#fcef72',
                   3,
-                  '#f1f075',
+                  '#e89c23',
                   6,
-                  '#f28cb1'
+                  '#941510'
             ],
             'fill-opacity': 0.5
           }
@@ -60,11 +84,48 @@
           'source': 'counties',
           'layout': {},
           'paint': {
-            'line-color': '#000',
-            'line-width': 1
+            'line-color': '#424242',
+            'line-width': 0.5
           }
-        });    })
+        });
+        const hover_popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+          });
+        const detail_popup = new mapboxgl.Popup({
+          });
+        map.on('mousemove', 'countyFill', (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const props = e.features[0].properties
+          if(!detail_popup.isOpen()) {
+
+            hover_popup.setLngLat(e.lngLat)
+            .setHTML(`
+            <div>
+            <strong>${props.name}</strong>
+            <div>${props.observation_count} observations</div>
+            </div>
+          ` )
+            .addTo(map);
+          }
+        });
+        map.on('mouseleave', 'countyFill', () => {
+          map.getCanvas().style.cursor = '';
+          hover_popup.remove();
+        });
+        map.on('click', 'countyFill', (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const props = e.features[0].properties
+          detail_popup.setLngLat(e.lngLat)
+          .setHTML(`
+            <h4>Detailed view</h4>
+            <div>
+            <strong>${props.name}</strong>
+            <div>${props.observation_count} observations</div>
+            <a href="#">More information</a>
+            </div>
+          ` )
+          .addTo(map);
+        });
+        })
       </script>
-    </div>
-  </div>
-</div>
